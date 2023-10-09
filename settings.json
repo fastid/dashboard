@@ -1,0 +1,10 @@
+{
+  "demo": false,
+  "captcha": "recaptcha",
+  "recaptcha_site_key": "6LeQbVEoAAAAADnlV4S-4D8TdnG8unl30LnZRlOL",
+  "hcaptcha_site_key": "d821eabc-0bfe-4964-95e5-2ccaf8308cd3",
+  "captcha_usage": [
+    "signin",
+    "signup"
+  ]
+}
