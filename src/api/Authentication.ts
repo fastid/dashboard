@@ -1,4 +1,4 @@
-import {instanceAxios} from "./client";
+import {instanceAxios} from "./Client";
 
 interface IAuthentication {
   access_token: string
@@ -8,7 +8,7 @@ interface IAuthentication {
 export async function Authentication(
   {email, password, captcha} : { email: string, password: string, captcha?: string }
 ) {
-  return instanceAxios.post<IAuthentication>('/api/v1/authentication', {
+  return instanceAxios.post<IAuthentication>('/authentication', {
     email: email,
     password: password,
     captcha: captcha,

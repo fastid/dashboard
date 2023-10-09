@@ -25,5 +25,6 @@
   "close": "Close",
   "menu": "Menu",
   "create_an_administrator": "Create an administrator",
-  "go_to_project_github": "Go to the project repository"
+  "go_to_project_github": "Go to the project repository",
+  "password_dont_match_confirmation_password": "Password and password confirmation do not match"
 }

@@ -1,4 +1,4 @@
-import {instanceAxios} from "./client";
+import {instanceAxios} from './Client';
 
 export enum ISettingsCaptcha {
   none = 'none',
@@ -15,5 +15,5 @@ export interface ISettings {
 }
 
 export async function GetSettings() {
-  return instanceAxios.get<ISettings>('/settings')
+  return instanceAxios.get<ISettings>('/settings/')
 }

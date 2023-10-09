@@ -33,9 +33,6 @@ export const instanceAxios = axios.create({
 
 instanceAxios.interceptors.request.use(
   (config) => {
-    if (process.env.NODE_ENV === 'development') {
-      config.headers['X-Jsio-Token'] = 'cac12b1f0ed70394f14709b048201559'
-    }
     config.headers['Request-ID'] = uuidv4()
     return config
   },

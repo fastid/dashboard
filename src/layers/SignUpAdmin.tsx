@@ -16,6 +16,7 @@ import React, {useEffect, useState} from "react";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
+import {SignUpAdmin as ApiSignUpAdmin} from "../api/Admin";
 
 interface ILoginForm {
   email: string
@@ -33,7 +34,29 @@ export default function SignUpAdmin() {
   const handleClick = () => setShow(!show)
 
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
-    // form.setError('email', { type: 'custom', message: 'Ошибка валидации' })
+    form.clearErrors()
+
+    // data.email?.toLowerCase()
+    const password = data.password.trim()
+    const confirm_password = data.confirm_password.trim()
+    const email = data.email.trim()
+
+    if (password !== confirm_password) {
+      form.setError(
+        'confirm_password',
+        { type: 'custom', message: t('password_dont_match_confirmation_password')}
+      )
+      return
+    }
+
+    ApiSignUpAdmin({email: email, password: password}).then(()=>{
+
+    }).catch(()=> [
+
+    ])
+
+    console.log(data)
+
   }
 
   useEffect(() => {
@@ -78,7 +101,7 @@ export default function SignUpAdmin() {
                     )}
                   />
                   {form.formState.errors.email &&
-                    <Text fontSize='xs' color={'red.500'}>{form.formState.errors.email.message}</Text>}
+                    <Text fontSize='sm' color={'red.500'}>{form.formState.errors.email.message}</Text>}
                 </FormControl>
 
                 {/*Field Password*/}
@@ -102,7 +125,7 @@ export default function SignUpAdmin() {
                     </InputRightElement>
                   </InputGroup>
                   {form.formState.errors.password &&
-                    <Text fontSize='xs' color={'red.500'}>{form.formState.errors.password.message}</Text>}
+                    <Text fontSize='sm' color={'red.500'}>{form.formState.errors.password.message}</Text>}
                 </FormControl>
 
                 {/*Field Password*/}
@@ -121,7 +144,7 @@ export default function SignUpAdmin() {
                     />
                   </InputGroup>
                   {form.formState.errors.confirm_password &&
-                    <Text fontSize='xs' color={'red.500'}>{form.formState.errors.confirm_password.message}</Text>}
+                    <Text fontSize='sm' color={'red.500'}>{form.formState.errors.confirm_password.message}</Text>}
                 </FormControl>
 
                 <Stack spacing={10} pt={10}>
@@ -130,7 +153,7 @@ export default function SignUpAdmin() {
                     colorScheme={"brand"}
                     tabIndex={4}
                     _hover={{bg: 'brand.500'}}
-                  >{t('next')}</Button>
+                  >{t('sign_up')}</Button>
 
                 </Stack>
 

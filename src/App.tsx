@@ -3,11 +3,11 @@ import {useRecoilState} from "recoil"
 import {SettingsState} from "./states/settings"
 import Loader from "./layers/Loader"
 import './i18n';
-import {GetSettings, ISettings} from "./api/settings"
+import {GetSettings, ISettings} from "./api/Settings"
 import {ErrorState, IError} from "./states/error";
 import {ToastError} from "./components/ToastError";
 import {AxiosError} from "axios";
-import {IValidationError} from "./api/client";
+import {IValidationError} from "./api/Client";
 import {useTranslation} from "react-i18next";
 import {router} from "./routers";
 import {RouterProvider} from "react-router-dom";

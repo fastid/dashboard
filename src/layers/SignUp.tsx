@@ -15,16 +15,16 @@ import {
 } from '@chakra-ui/react'
 import React, {useEffect, useState} from "react";
 import {useRecoilState} from "recoil";
-import {ISettings, ISettingsCaptcha} from "../api/settings";
+import {ISettings, ISettingsCaptcha} from "../api/Settings";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import {ReCaptcha} from "../components/Captcha";
 import {SettingsState} from "../states/settings";
 import {ErrorState, IError} from "../states/error";
-import {Authentication} from "../api/authentication";
+import {Authentication} from "../api/Authentication";
 import {AxiosError} from "axios";
-import {IValidationError} from "../api/client";
+import {IValidationError} from "../api/Client";
 import {Link as RouterLink} from "react-router-dom";
 
 interface ILoginForm {

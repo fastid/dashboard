@@ -1,5 +1,5 @@
 import {atom} from "recoil";
-import {ISettings, ISettingsCaptcha} from "../api/settings";
+import {ISettings, ISettingsCaptcha} from "../api/Settings";
 
 export const SettingsState = atom<ISettings>({
   key: 'settings',
