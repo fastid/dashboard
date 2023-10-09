@@ -21,5 +21,6 @@
   "security": "Security",
   "change_password": "Change password",
   "change_dark_theme": "Change to a dark theme",
-  "close": "Close"
+  "close": "Close",
+  "menu": "Menu"
 }

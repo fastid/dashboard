@@ -35,17 +35,17 @@ import {IconType} from "react-icons";
 import {Link as ReactRouterLink} from 'react-router-dom'
 
 
-const AvatarMenuList: { icon: JSX.Element, name: string }[] = [
-  { "icon": <MdSettings size={16} />, "name": 'profile' },
-  { "icon": <MdPortrait size={16} />, "name": 'avatar' },
-  { "icon": <MdOutlineLockOpen size={16} />, "name": 'security' },
-  { "icon": <MdOutlineVpnKey size={16} />, "name": 'change_password' },
+const AvatarMenuList: { icon: JSX.Element, name: string, link: string }[] = [
+  { icon: <MdSettings size={16} />, name: 'profile', link: '/signup' },
+  { icon: <MdPortrait size={16} />, name: 'avatar', link: '/signup' },
+  { icon: <MdOutlineLockOpen size={16} />, name: 'security', link: '/signup' },
+  { icon: <MdOutlineVpnKey size={16} />, name: 'change_password', link: '/signup' },
 ];
 
 
 const CommonMenuList: { icon: IconType, name: string, link: string }[] = [
-  { "icon": MdSettings, "name": 'profile', link: '/signup' },
-  { "icon": MdSettings, "name": 'change_password', link: '/signup' },
+  { icon: MdSettings, name: 'profile', link: '/signup' },
+  { icon: MdSettings, name: 'change_password', link: '/signup' },
 ];
 
 
@@ -116,10 +116,10 @@ export const NavigationMenuUpper = () => {
           <DrawerOverlay/>
           <DrawerContent>
             <DrawerCloseButton/>
-            <DrawerHeader>Меню</DrawerHeader>
+            <DrawerHeader>{t('menu')}</DrawerHeader>
 
             <DrawerBody>
-              <List spacing={3}>
+              <List spacing={3} pb={3} borderBottom={'1px'} borderBottomColor={'gray.200'}>
                 {CommonMenuList.map((item) =>
                   <ListItem>
                     <Link
@@ -141,8 +141,33 @@ export const NavigationMenuUpper = () => {
                     </Link>
                   </ListItem>
                 )}
-
               </List>
+
+              {/* Admin */}
+              {/*<List spacing={3} pt={5}>*/}
+              {/*  {CommonMenuList.map((item) =>*/}
+              {/*    <ListItem>*/}
+              {/*      <Link*/}
+              {/*        display="block"*/}
+              {/*        _focus={{bg: "gray.100"}}*/}
+              {/*        _hover={{*/}
+              {/*          bg: "brand.200"*/}
+              {/*        }}*/}
+              {/*        // _activeLink={{ bg: "orange.500", color: "white" }}*/}
+              {/*        w="full"*/}
+              {/*        borderRadius="lg"*/}
+              {/*      >*/}
+              {/*        <ChakraLink as={ReactRouterLink} to={item.link}>*/}
+              {/*          <Flex alignItems="center" p={2}>*/}
+              {/*            <Icon as={item.icon} boxSize="5"/>*/}
+              {/*            <Text ml={2}>{t(item.name)}</Text>*/}
+              {/*          </Flex>*/}
+              {/*        </ChakraLink>*/}
+              {/*      </Link>*/}
+              {/*    </ListItem>*/}
+              {/*  )}*/}
+              {/*</List>*/}
+
             </DrawerBody>
 
             <DrawerFooter>
@@ -176,8 +201,12 @@ const AvatarMenu = () => {
       />
 
       <MenuList>
-        {AvatarMenuList.map(({icon, name}) =>
-          <MenuItem icon={icon} >{t(name.toString())}</MenuItem>
+        {AvatarMenuList.map(({icon, name, link }) =>
+          <ChakraLink as={ReactRouterLink} to={link}>
+            <MenuItem icon={icon} >
+              {t(name.toString())}
+            </MenuItem>
+          </ChakraLink>
         )}
         <MenuDivider />
         <MenuItem icon={<MdLogout size={16} />}>{t('logout')}</MenuItem>
@@ -192,7 +221,7 @@ export const CommonMenu = () => {
 
   return (
     <>
-      <Box p={3} w={350} display={{ base: "none", lg: 'block' }} >
+      <Box p={3} w={350} display={{ base: "none", lg: 'block' }} borderBottom={'1px'} borderBottomColor={'gray.200'}>
         <List spacing={3} >
 
           {CommonMenuList.map((item) =>

@@ -10,6 +10,7 @@ const config: ThemeConfig = {
 // 3. extend the theme
 export const theme = extendTheme({
   config: config,
+
   fonts: {
     heading: `'Roboto', sans-serif`,
     body: `'Roboto', sans-serif`,
@@ -43,9 +44,14 @@ export const theme = extendTheme({
   },
   components: {
     Link: {
-      variants: {
-
-      }
+      baseStyle: {
+        // normal styling
+        textDecoration: "none",
+        // hover styling goes here
+        _hover: {
+          textDecoration: "none",
+        },
+      },
     }
   }
 })
