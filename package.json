@@ -7,8 +7,6 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@fontsource/open-sans": "^5.0.14",
-    "@fontsource/raleway": "^5.0.12",
     "@fontsource/roboto": "^5.0.8",
     "@hcaptcha/react-hcaptcha": "^1.8.1",
     "@testing-library/jest-dom": "^5.17.0",
