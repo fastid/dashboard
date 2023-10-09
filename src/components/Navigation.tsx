@@ -50,14 +50,14 @@ const CommonMenuList: { icon: IconType, name: string, link: string }[] = [
 
 
 export const NavigationMenuUpper = () => {
-  const {toggleColorMode} = useColorMode()
+  const {colorMode, toggleColorMode} = useColorMode()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const {t} = useTranslation();
 
   return (
     <>
       <Image title={'FastID'} ml={3} w={{base: '140px', 'sm': '100px', 'md': '100px', 'lg': '140px'}}
-             src='/fastid-logo.svg' alt='Dan Abramov'/>
+             src='/fastid-logo.svg' alt='FastID'/>
 
       <HStack flex={1}>
       </HStack>
@@ -66,6 +66,7 @@ export const NavigationMenuUpper = () => {
 
         <Link
           isExternal
+          title={t('go_to_project_github')}
           href='https://github.com/fastid/fastid'
           display={{base: "none", lg: 'block'}}
           mr={4}
@@ -89,7 +90,7 @@ export const NavigationMenuUpper = () => {
           h={7}
           mr={3}
           as={useColorModeValue(BsSunFill, BsSun)}
-          title={'ddd'}
+          title={colorMode === 'light' ? t('change_dark_theme') : t('change_light_theme')}
           cursor={'pointer'}
         />
 
@@ -123,8 +124,8 @@ export const NavigationMenuUpper = () => {
 
             <DrawerBody>
               <List spacing={3} borderBottom={'1px'} borderBottomColor={'gray.200'} pb={5}>
-                {CommonMenuList.map((item) =>
-                  <ListItem>
+                {CommonMenuList.map((item, index) =>
+                  <ListItem key={index}>
                     <Link
                       display="block"
                       _focus={{bg: "gray.100"}}
@@ -134,6 +135,7 @@ export const NavigationMenuUpper = () => {
                       // _activeLink={{ bg: "orange.500", color: "white" }}
                       w="full"
                       borderRadius="lg"
+                      key={index}
                     >
                       <ChakraLink as={ReactRouterLink} to={item.link}>
                       <Flex alignItems="center" pt={2} pb={2}>
@@ -204,8 +206,8 @@ const AvatarMenu = () => {
       />
 
       <MenuList>
-        {AvatarMenuList.map(({icon, name, link }) =>
-          <ChakraLink as={ReactRouterLink} to={link}>
+        {AvatarMenuList.map(({icon, name, link }, index) =>
+          <ChakraLink as={ReactRouterLink} to={link} key={index}>
             <MenuItem icon={icon} >
               {t(name.toString())}
             </MenuItem>
@@ -227,9 +229,9 @@ export const CommonMenu = () => {
       <Box p={3} w={350} display={{ base: "none", lg: 'block' }} borderBottom={'1px'} borderBottomColor={'gray.200'}>
         <List spacing={3} >
 
-          {CommonMenuList.map((item) =>
-            <ListItem>
-              <Link
+          {CommonMenuList.map((item, index) =>
+            <ListItem key={index}>
+              <ChakraLink
                 display="block"
                 _focus={{ bg: "gray.100" }}
                 _hover={{
@@ -237,14 +239,13 @@ export const CommonMenu = () => {
                 }}
                 w="full"
                 borderRadius="lg"
+                as={ReactRouterLink} to={item.link}
               >
-                <ChakraLink as={ReactRouterLink} to={item.link}>
                   <Flex alignItems="center" p={2}>
                     <Icon as={item.icon} />
                     <Text ml={2} >{t(item.name.toString())}</Text>
                   </Flex>
-                </ChakraLink>
-              </Link>
+              </ChakraLink>
             </ListItem>
           )}
 

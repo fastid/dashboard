@@ -21,6 +21,9 @@
   "security": "Безопастность",
   "change_password": "Сменить пароль",
   "change_dark_theme": "Изменить на темную тему",
+  "change_light_theme": "Изменить на светлую тему",
   "close": "Звкрыть",
-  "menu": "Меню"
+  "menu": "Меню",
+  "create_an_administrator_account": "Создать администратора",
+  "go_to_project_github": "Перейти в репозиторий проекта"
 }

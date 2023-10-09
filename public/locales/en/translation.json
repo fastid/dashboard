@@ -21,6 +21,9 @@
   "security": "Security",
   "change_password": "Change password",
   "change_dark_theme": "Change to a dark theme",
+  "change_light_theme": "Change to a light theme",
   "close": "Close",
-  "menu": "Menu"
+  "menu": "Menu",
+  "create_an_administrator": "Create an administrator",
+  "go_to_project_github": "Go to the project repository"
 }
