@@ -115,11 +115,14 @@ export const NavigationMenuUpper = () => {
         >
           <DrawerOverlay/>
           <DrawerContent>
-            <DrawerCloseButton/>
-            <DrawerHeader>{t('menu')}</DrawerHeader>
+            <DrawerCloseButton autoFocus={false}/>
+            <DrawerHeader>
+              {/*{t('menu')}*/}
+              <Avatar size='md' name='Kostya Ten' src='https://1.gravatar.com/avatar/7f43d4a59cc637502c9f903a9ee42a7d3185aa28d3e2d7e31b858f955a65c27b?size=128' />{' '}
+            </DrawerHeader>
 
             <DrawerBody>
-              <List spacing={3} pb={3} borderBottom={'1px'} borderBottomColor={'gray.200'}>
+              <List spacing={3} borderBottom={'1px'} borderBottomColor={'gray.200'} pb={5}>
                 {CommonMenuList.map((item) =>
                   <ListItem>
                     <Link
@@ -133,7 +136,7 @@ export const NavigationMenuUpper = () => {
                       borderRadius="lg"
                     >
                       <ChakraLink as={ReactRouterLink} to={item.link}>
-                      <Flex alignItems="center" p={2}>
+                      <Flex alignItems="center" pt={2} pb={2}>
                           <Icon as={item.icon} boxSize="5"/>
                           <Text ml={2}>{t(item.name)}</Text>
                       </Flex>
