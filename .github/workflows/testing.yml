@@ -9,11 +9,16 @@ on:
       - main
 
 jobs:
-  build:
+  ESLint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
       - name: Install modules
         run: yarn install
+
       - name: Run ESLint
-        run: eslint . --ext .js,.jsx,.ts,.tsx
+        run: yarn lint
