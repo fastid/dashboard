@@ -188,7 +188,6 @@ export default function SignUp() {
                   _hover={{bg: 'brand.500'}}
                 >{t('next')}</Button>
 
-
               </Stack>
 
             </Stack>
