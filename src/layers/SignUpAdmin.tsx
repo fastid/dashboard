@@ -13,16 +13,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import React, {useEffect, useState} from "react";
-import {useRecoilState} from "recoil";
-import {ISettings} from "../api/settings";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
-import {SettingsState} from "../states/settings";
-import {ErrorState, IError} from "../states/error";
-import {Authentication} from "../api/authentication";
-import {AxiosError} from "axios";
-import {IValidationError} from "../api/client";
 
 interface ILoginForm {
   email: string
@@ -33,45 +26,14 @@ interface ILoginForm {
 
 export default function SignUpAdmin() {
   const {t} = useTranslation();
-  // const [settings] = useRecoilState<ISettings>(SettingsState)
 
   const form = useForm<ILoginForm>()
 
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
-  const [, setError] = useRecoilState<IError>(ErrorState);
-
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
     // form.setError('email', { type: 'custom', message: 'Ошибка валидации' })
-    Authentication({
-      email: data.email,
-      password: data.password,
-      captcha: data.captcha,
-    }).then((response) => {
-      setError({title: 'Not implemented'})
-      console.log(response)
-    }).catch((err: Error | AxiosError<IValidationError>)=>{
-
-      // if (isAxiosError(err) && err.response) {
-      //   console.log(err)
-      //
-      //   if (err.response && err.response.data.error) {
-      //     setError({title: t(err.response.data.error.key, err.response.data.error.params)})
-      //   }
-      //   else {
-      //     // setError({title: t(err.message, err.message)})
-      //   }
-      // } else if (isAxiosError(err) && err.request) {
-      //   console.log(err)
-      // } else {
-      //   console.log(err)
-      // }
-
-      setError({title: 'Not implemented'})
-      console.log(err)
-    })
-
   }
 
   useEffect(() => {
