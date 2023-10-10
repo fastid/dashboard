@@ -15,16 +15,12 @@ import {
 } from '@chakra-ui/react'
 import React, {useEffect, useState} from "react";
 import {useRecoilState} from "recoil";
-import {ISettings, ISettingsCaptcha} from "../api/Settings";
+import {InterfacesAPI} from "../api/API";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import {ReCaptcha} from "../components/Captcha";
 import {SettingsState} from "../states/settings";
-import {ErrorState, IError} from "../states/error";
-import {Authentication} from "../api/Authentication";
-import {AxiosError} from "axios";
-import {IValidationError} from "../api/Client";
 import {Link as RouterLink} from "react-router-dom";
 
 interface ILoginForm {
@@ -35,25 +31,25 @@ interface ILoginForm {
 
 export default function SignIn() {
   const {t} = useTranslation();
-  const [settings] = useRecoilState<ISettings>(SettingsState)
+  const [settings] = useRecoilState<InterfacesAPI.Settings>(SettingsState)
 
   const form = useForm<ILoginForm>()
 
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
-  const [, setError] = useRecoilState<IError>(ErrorState);
+  // const [, setError] = useRecoilState<IError>(ErrorState);
 
-  const onSubmit: SubmitHandler<ILoginForm> = (data) => {
+  const onSubmit: SubmitHandler<ILoginForm> = () => {
     // form.setError('email', { type: 'custom', message: 'Ошибка валидации' })
-    Authentication({
-      email: data.email,
-      password: data.password,
-      captcha: data.captcha,
-    }).then((response) => {
-      setError({title: 'Not implemented'})
-      console.log(response)
-    }).catch((err: Error | AxiosError<IValidationError>)=>{
+    // Authentication({
+    //   email: data.email,
+    //   password: data.password,
+    //   captcha: data.captcha,
+    // }).then((response) => {
+    //   setError({title: 'Not implemented'})
+    //   console.log(response)
+    // }).catch((err: Error | AxiosError<IValidationError>)=>{
 
       // if (isAxiosError(err) && err.response) {
       //   console.log(err)
@@ -69,10 +65,10 @@ export default function SignIn() {
       // } else {
       //   console.log(err)
       // }
-      console.log(err)
-      setError({title: 'Not implemented'})
-
-    })
+    //   console.log(err)
+    //   setError({title: 'Not implemented'})
+    //
+    // })
 
   }
 
@@ -160,7 +156,7 @@ export default function SignIn() {
                   <Text color={'blue.400'}>{t('forgot_password')}</Text>
                 </Stack>
 
-                {settings.captcha === ISettingsCaptcha.recaptcha &&
+                {settings.captcha === InterfacesAPI.CaptchaType.recaptcha &&
                   settings.recaptcha_site_key &&
                   settings.captcha_usage.includes('signin') &&
                   <ReCaptcha siteKey={settings.recaptcha_site_key} tabIndex={3}/>

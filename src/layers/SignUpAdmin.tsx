@@ -16,7 +16,8 @@ import React, {useEffect, useState} from "react";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
-import {SignUpAdmin as ApiSignUpAdmin} from "../api/Admin";
+import {api} from "../api/API"
+
 
 interface ILoginForm {
   email: string
@@ -36,7 +37,6 @@ export default function SignUpAdmin() {
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
     form.clearErrors()
 
-    // data.email?.toLowerCase()
     const password = data.password.trim()
     const confirm_password = data.confirm_password.trim()
     const email = data.email.trim()
@@ -49,18 +49,15 @@ export default function SignUpAdmin() {
       return
     }
 
-    ApiSignUpAdmin({email: email, password: password}).then(()=>{
+    api.SignUpAdmin({email: email, password: password}).then(()=>{
 
     }).catch(()=> [
 
     ])
-
-    console.log(data)
-
   }
 
   useEffect(() => {
-    document.title = t('create_an_account')
+    document.title = t('create_an_administrator')
     form.setFocus('email')
     // console.log(settings)
 
