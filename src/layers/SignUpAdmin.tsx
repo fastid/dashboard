@@ -59,8 +59,6 @@ export default function SignUpAdmin() {
   useEffect(() => {
     document.title = t('create_an_administrator')
     form.setFocus('email')
-    // console.log(settings)
-
   }, [form, t])
 
   return (

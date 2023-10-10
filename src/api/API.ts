@@ -5,7 +5,6 @@ export namespace InterfacesAPI {
     export enum CaptchaType {
       none = 'none',
       recaptcha = 'recaptcha',
-      hcaptcha = 'hcaptcha',
   }
 
   export interface Settings {

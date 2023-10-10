@@ -8,6 +8,5 @@ export const SettingsState = atom<InterfacesAPI.Settings>({
     captcha: InterfacesAPI.CaptchaType.recaptcha,
     captcha_usage: [],
     recaptcha_site_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
-    hcaptcha_site_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
   },
 })
