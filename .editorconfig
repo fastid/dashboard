@@ -19,4 +19,4 @@ max_line_length = 89
 indent_style = tab
 
 [*.{yml,yaml,ts,tsx,toml}]
-indent_size = 2
+indent_size = 4
