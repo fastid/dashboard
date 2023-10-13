@@ -1,12 +1,10 @@
 import React, {useEffect} from 'react'
 import {useRecoilState} from "recoil"
-import {SettingsState} from "./states/settings"
+import {ConfigState} from "./states/Config"
 import Loader from "./layers/Loader"
 import './i18n';
 import {ErrorState, IError} from "./states/error";
 import {ToastError} from "./components/ToastError";
-import {AxiosError} from "axios";
-import {IValidationError} from "./api/Client";
 import {useTranslation} from "react-i18next";
 import {router} from "./routers";
 import {RouterProvider} from "react-router-dom";
@@ -18,17 +16,20 @@ export default function App() {
   const [
     settings,
     setSettings,
-  ] = useRecoilState<InterfacesAPI.Settings>(SettingsState)
+  ] = useRecoilState<InterfacesAPI.Config>(ConfigState)
 
   const [, setError] = useRecoilState<IError>(ErrorState);
   const {t} = useTranslation();
 
   useEffect(() => {
-    api.GetSettings().then(response=>{
+    api.GetConfig().then(response=>{
       setSettings({...response.data, is_init: true})
-    }).catch((err: Error | AxiosError<IValidationError>) =>{
+    }).catch((err) =>{
       setSettings({...settings, is_init: true})
-      setError({title: t('unable_get_project_settings'), description: err.message})
+      setError({
+        title: t('unable_get_project_settings'),
+        description: `request-id: ${err.response.headers.get('request-id')}`
+      })
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

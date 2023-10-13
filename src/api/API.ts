@@ -7,11 +7,11 @@ export namespace InterfacesAPI {
       recaptcha = 'recaptcha',
   }
 
-  export interface Settings {
+  export interface Config {
     is_init: boolean
+    is_setup: boolean
     captcha: CaptchaType,
     captcha_usage: string[],
-    hcaptcha_site_key?: string
     recaptcha_site_key?: string
   }
 
@@ -19,14 +19,12 @@ export namespace InterfacesAPI {
     access_token: string
     refresh_token: string
   }
-
-
 }
 
 
 class API {
-  GetSettings() {
-    return instanceAxios.get<InterfacesAPI.Settings>('/settings/')
+  GetConfig() {
+    return instanceAxios.get<InterfacesAPI.Config>('/config/')
   }
 
   SignUpAdmin({email, password} : { email: string, password: string}) {

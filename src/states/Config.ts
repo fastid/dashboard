@@ -1,12 +1,13 @@
 import {atom} from "recoil";
 import {InterfacesAPI} from "../api/API";
 
-export const SettingsState = atom<InterfacesAPI.Settings>({
-  key: 'settings',
+export const ConfigState = atom<InterfacesAPI.Config>({
+  key: 'Config',
   default: {
     is_init: false,
+    is_setup: false,
     captcha: InterfacesAPI.CaptchaType.recaptcha,
     captcha_usage: [],
-    recaptcha_site_key: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+    recaptcha_site_key: undefined,
   },
 })

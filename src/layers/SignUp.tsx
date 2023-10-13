@@ -20,7 +20,7 @@ import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import {ReCaptcha} from "../components/Captcha";
-import {SettingsState} from "../states/settings";
+import {ConfigState} from "../states/Config";
 import {Link as RouterLink} from "react-router-dom";
 
 interface ILoginForm {
@@ -32,7 +32,7 @@ interface ILoginForm {
 
 export default function SignUp() {
   const {t} = useTranslation();
-  const [settings] = useRecoilState<InterfacesAPI.Settings>(SettingsState)
+  const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
 
   const form = useForm<ILoginForm>()
 
@@ -171,10 +171,10 @@ export default function SignUp() {
 
               <Stack spacing={10} pt={10}>
 
-                {settings.captcha === InterfacesAPI.CaptchaType.recaptcha &&
-                  settings.recaptcha_site_key &&
-                  settings.captcha_usage.includes('signup') &&
-                  <ReCaptcha siteKey={settings.recaptcha_site_key} tabIndex={3}/>
+                {config.captcha === InterfacesAPI.CaptchaType.recaptcha &&
+                    config.recaptcha_site_key &&
+                    config.captcha_usage.includes('signup') &&
+                  <ReCaptcha siteKey={config.recaptcha_site_key} tabIndex={3}/>
                 }
 
                 <Button

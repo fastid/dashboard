@@ -55,8 +55,10 @@ export default function SignUpAdmin() {
 
         api.SignUpAdmin({email: email, password: password}).then(() => {
         }).catch((err) => {
-            console.error(err)
-            setError({title: err.message})
+            setError({
+                title: err.message,
+                description: `request-id: ${err.response.headers.get('request-id')}`,
+            })
         })
     }
 
