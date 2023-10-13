@@ -6,8 +6,8 @@ export const ConfigState = atom<InterfacesAPI.Config>({
   default: {
     is_init: false,
     is_setup: false,
-    captcha: InterfacesAPI.CaptchaType.recaptcha,
+    captcha: null,
     captcha_usage: [],
-    recaptcha_site_key: undefined,
+    recaptcha_site_key: null,
   },
 })

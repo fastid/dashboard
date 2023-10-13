@@ -10,9 +10,9 @@ export namespace InterfacesAPI {
   export interface Config {
     is_init: boolean
     is_setup: boolean
-    captcha: CaptchaType,
+    captcha: CaptchaType | null,
     captcha_usage: string[],
-    recaptcha_site_key?: string
+    recaptcha_site_key: string | null
   }
 
   export interface SignUpAdmin {

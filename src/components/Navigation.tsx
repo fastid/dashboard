@@ -36,16 +36,16 @@ import {Link as ReactRouterLink} from 'react-router-dom'
 
 
 const AvatarMenuList: { icon: JSX.Element, name: string, link: string }[] = [
-  { icon: <MdSettings size={16} />, name: 'profile', link: '/signup' },
-  { icon: <MdPortrait size={16} />, name: 'avatar', link: '/signup' },
-  { icon: <MdOutlineLockOpen size={16} />, name: 'security', link: '/signup' },
-  { icon: <MdOutlineVpnKey size={16} />, name: 'change_password', link: '/signup' },
+  {icon: <MdSettings size={16}/>, name: 'profile', link: '/signup'},
+  {icon: <MdPortrait size={16}/>, name: 'avatar', link: '/signup'},
+  {icon: <MdOutlineLockOpen size={16}/>, name: 'security', link: '/signup'},
+  {icon: <MdOutlineVpnKey size={16}/>, name: 'change_password', link: '/signup'},
 ];
 
 
 const CommonMenuList: { icon: IconType, name: string, link: string }[] = [
-  { icon: MdSettings, name: 'profile', link: '/signup' },
-  { icon: MdSettings, name: 'change_password', link: '/signup' },
+  {icon: MdSettings, name: 'profile', link: '/signup'},
+  {icon: MdSettings, name: 'change_password', link: '/signup'},
 ];
 
 
@@ -119,7 +119,8 @@ export const NavigationMenuUpper = () => {
             <DrawerCloseButton autoFocus={false}/>
             <DrawerHeader>
               {/*{t('menu')}*/}
-              <Avatar size='md' name='Kostya Ten' src='https://1.gravatar.com/avatar/7f43d4a59cc637502c9f903a9ee42a7d3185aa28d3e2d7e31b858f955a65c27b?size=128' />{' '}
+              <Avatar size='md' name='Kostya Ten'
+                      src='https://1.gravatar.com/avatar/7f43d4a59cc637502c9f903a9ee42a7d3185aa28d3e2d7e31b858f955a65c27b?size=128'/>{' '}
             </DrawerHeader>
 
             <DrawerBody>
@@ -138,10 +139,10 @@ export const NavigationMenuUpper = () => {
                       key={index}
                     >
                       <ChakraLink as={ReactRouterLink} to={item.link}>
-                      <Flex alignItems="center" pt={2} pb={2}>
+                        <Flex alignItems="center" pt={2} pb={2}>
                           <Icon as={item.icon} boxSize="5"/>
                           <Text ml={2}>{t(item.name)}</Text>
-                      </Flex>
+                        </Flex>
                       </ChakraLink>
                     </Link>
                   </ListItem>
@@ -194,11 +195,11 @@ const AvatarMenu = () => {
   const {t} = useTranslation();
 
   return (
-    <Menu arrowPadding={100} >
+    <Menu arrowPadding={100}>
       <MenuButton
-        display={{ base: "none", lg: 'block' }}
+        display={{base: "none", lg: 'block'}}
         as={Avatar}
-        _hover={{ bg: useColorModeValue("gray.100", "gray.700")}}
+        _hover={{bg: useColorModeValue("gray.100", "gray.700")}}
         src='https://1.gravatar.com/avatar/7f43d4a59cc637502c9f903a9ee42a7d3185aa28d3e2d7e31b858f955a65c27b?size=128'
         size={'sm'}
         cursor={'pointer'}
@@ -206,15 +207,15 @@ const AvatarMenu = () => {
       />
 
       <MenuList>
-        {AvatarMenuList.map(({icon, name, link }, index) =>
+        {AvatarMenuList.map(({icon, name, link}, index) =>
           <ChakraLink as={ReactRouterLink} to={link} key={index}>
-            <MenuItem icon={icon} >
+            <MenuItem icon={icon}>
               {t(name.toString())}
             </MenuItem>
           </ChakraLink>
         )}
-        <MenuDivider />
-        <MenuItem icon={<MdLogout size={16} />}>{t('logout')}</MenuItem>
+        <MenuDivider/>
+        <MenuItem icon={<MdLogout size={16}/>}>{t('logout')}</MenuItem>
       </MenuList>
     </Menu>
   )
@@ -226,14 +227,14 @@ export const CommonMenu = () => {
 
   return (
     <>
-      <Box p={3} w={350} display={{ base: "none", lg: 'block' }} borderBottom={'1px'} borderBottomColor={'gray.200'}>
-        <List spacing={3} >
+      <Box p={3} w={350} display={{base: "none", lg: 'block'}} borderBottom={'1px'} borderBottomColor={'gray.200'}>
+        <List spacing={3}>
 
           {CommonMenuList.map((item, index) =>
             <ListItem key={index}>
               <ChakraLink
                 display="block"
-                _focus={{ bg: "gray.100" }}
+                _focus={{bg: "gray.100"}}
                 _hover={{
                   bg: "brand.200"
                 }}
@@ -241,10 +242,10 @@ export const CommonMenu = () => {
                 borderRadius="lg"
                 as={ReactRouterLink} to={item.link}
               >
-                  <Flex alignItems="center" p={2}>
-                    <Icon as={item.icon} />
-                    <Text ml={2} >{t(item.name.toString())}</Text>
-                  </Flex>
+                <Flex alignItems="center" p={2}>
+                  <Icon as={item.icon}/>
+                  <Text ml={2}>{t(item.name.toString())}</Text>
+                </Flex>
               </ChakraLink>
             </ListItem>
           )}

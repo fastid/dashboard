@@ -8,11 +8,11 @@ const Dashboard = () => {
   return (
     <>
       <Flex borderBottom={'1px'} borderBottomColor={'gray.200'}>
-        <NavigationMenuUpper />
+        <NavigationMenuUpper/>
       </Flex>
 
       <Flex w={'100%'}>
-        <CommonMenu />
+        <CommonMenu/>
         <Box p={5} w={'100%'}>ddd</Box>
 
       </Flex>

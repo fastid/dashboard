@@ -22,9 +22,9 @@ export default function App() {
   const {t} = useTranslation();
 
   useEffect(() => {
-    api.GetConfig().then(response=>{
+    api.GetConfig().then(response => {
       setSettings({...response.data, is_init: true})
-    }).catch((err) =>{
+    }).catch((err) => {
       setSettings({...settings, is_init: true})
       setError({
         title: t('unable_get_project_settings'),
@@ -36,13 +36,13 @@ export default function App() {
   }, []);
 
   if (!settings.is_init) {
-    return (<Loader />)
+    return (<Loader/>)
   }
 
   return (
     <div>
-      <ToastError />
-      <RouterProvider router={router} />
+      <ToastError/>
+      <RouterProvider router={router}/>
     </div>
   );
 }
