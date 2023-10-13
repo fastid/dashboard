@@ -102,8 +102,7 @@ export default function SignUpAdmin() {
                     )}
                   />
                   {form.formState.errors.email &&
-                    <Text fontSize='sm'
-                          color={'red.500'}>{form.formState.errors.email.message}</Text>}
+                    <Text fontSize='sm' color={'red.500'}>{form.formState.errors.email.message}</Text>}
                 </FormControl>
 
                 {/*Field Password*/}
@@ -127,8 +126,7 @@ export default function SignUpAdmin() {
                     </InputRightElement>
                   </InputGroup>
                   {form.formState.errors.password &&
-                    <Text fontSize='sm'
-                          color={'red.500'}>{form.formState.errors.password.message}</Text>}
+                    <Text fontSize='sm' color={'red.500'}>{form.formState.errors.password.message}</Text>}
                 </FormControl>
 
                 {/*Field Password*/}
@@ -147,8 +145,7 @@ export default function SignUpAdmin() {
                     />
                   </InputGroup>
                   {form.formState.errors.confirm_password &&
-                    <Text fontSize='sm'
-                          color={'red.500'}>{form.formState.errors.confirm_password.message}</Text>}
+                    <Text fontSize='sm' color={'red.500'}>{form.formState.errors.confirm_password.message}</Text>}
                 </FormControl>
 
                 <Stack spacing={10} pt={10}>
@@ -158,7 +155,6 @@ export default function SignUpAdmin() {
                     tabIndex={4}
                     _hover={{bg: 'brand.500'}}
                   >{t('sign_up')}</Button>
-
                 </Stack>
 
               </Stack>

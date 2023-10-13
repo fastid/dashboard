@@ -96,7 +96,7 @@ export default function SignIn() {
           </Text>
 
         </Stack>
-        <Box rounded={'lg'} bg={useColorModeValue('white', 'gray.700')} boxShadow={'lg'} p={8}>
+        <Box minW={'350px'} rounded={'lg'} bg={useColorModeValue('white', 'gray.700')} boxShadow={'lg'} p={8}>
 
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -121,7 +121,7 @@ export default function SignIn() {
                     )}
                   />
                   {form.formState.errors.email &&
-                    <Text fontSize='xs' color={'red.500'}>{form.formState.errors.email.message}</Text>}
+                    <Text fontSize='sm' color={'red.500'}>{form.formState.errors.email.message}</Text>}
                 </FormControl>
 
                 {/*Field Password*/}
@@ -145,7 +145,7 @@ export default function SignIn() {
                     </InputRightElement>
                   </InputGroup>
                   {form.formState.errors.password &&
-                    <Text fontSize='xs' color={'red.500'}>{form.formState.errors.password.message}</Text>}
+                    <Text fontSize='sm' color={'red.500'}>{form.formState.errors.password.message}</Text>}
                 </FormControl>
 
                 <Stack spacing={10}>
@@ -153,7 +153,7 @@ export default function SignIn() {
                     direction={{base: 'column', sm: 'row'}}
                     align={'start'}
                     justify={'space-between'}>
-                    <Text color={'blue.400'}>{t('forgot_password')}</Text>
+                    <Text color={'brand.400'}>{t('forgot_password')}</Text>
                   </Stack>
 
                   {config.captcha === InterfacesAPI.CaptchaType.recaptcha &&
