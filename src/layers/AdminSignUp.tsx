@@ -21,7 +21,6 @@ import {useRecoilState} from "recoil"
 import {ErrorState, IError} from "../states/error"
 import {ConfigState} from "../states/Config"
 import {useNavigate} from "react-router-dom"
-import jwt_decode, { JwtPayload }  from "jwt-decode"
 
 
 interface ILoginForm {
@@ -38,7 +37,7 @@ export default function AdminSignUp() {
 
   const [show, setShow] = useState(false)
   const [, setError] = useRecoilState<IError>(ErrorState);
-  const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
+  const [config, setConfig] = useRecoilState<InterfacesAPI.Config>(ConfigState)
   const navigate = useNavigate();
 
   const handleClick = () => setShow(!show)
@@ -63,7 +62,10 @@ export default function AdminSignUp() {
       const refresh_token = response.data.refresh_token
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
-      window.location.reload()
+
+      setConfig({...config, is_setup: true})
+      navigate('/')
+
     }).catch((err) => {
       setError({
         title: err.message,
@@ -73,11 +75,6 @@ export default function AdminSignUp() {
   }
 
   useEffect(() => {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGYXN0SUQiLCJqdGkiOiIzYzI5NGJlMC1kNTNhLTQ2NjYtYjk3MC03ZTU4ZjMzMjllYzkiLCJpYXQiOjE2OTcyNDE3ODEsImV4cCI6MTY5NzMyODE4MSwiYXVkIjoiYXV0aCJ9._CsqyT1_56haoYeVKjxYbCAJKmG02GhcsGD59-yPOCU'
-    const decoded = jwt_decode<JwtPayload>(token);
-    console.log(decoded.exp)
-
-
     if (config.is_setup) {
       navigate('/')
     }

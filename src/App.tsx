@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
-import {useRecoilState} from "recoil"
-import {ConfigState} from "./states/Config"
+import {useRecoilState, useRecoilValue} from "recoil"
+import {ConfigSelector, ConfigState} from "./states/Config"
 import Loader from "./layers/Loader"
 import './i18n';
 import {ErrorState, IError} from "./states/error";
@@ -12,20 +12,19 @@ import {api, InterfacesAPI} from "./api/API"
 
 
 export default function App() {
-
-  const [
-    settings,
-    setSettings,
-  ] = useRecoilState<InterfacesAPI.Config>(ConfigState)
-
   const [, setError] = useRecoilState<IError>(ErrorState);
   const {t} = useTranslation();
 
+  const [
+    config,
+    setConfig,
+  ] = useRecoilState<InterfacesAPI.Config>(ConfigState)
+
   useEffect(() => {
     api.GetConfig().then(response => {
-      setSettings({...response.data, is_init: true})
+      setConfig({...response.data, is_init: true})
     }).catch((err) => {
-      setSettings({...settings, is_init: true})
+      setConfig({...config, is_init: true})
       setError({
         title: t('unable_get_project_settings'),
         description: `request-id: ${err.response.headers.get('request-id')}`
@@ -35,7 +34,7 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!settings.is_init) {
+  if (!config.is_init) {
     return (<Loader/>)
   }
 
