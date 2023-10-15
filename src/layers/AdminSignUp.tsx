@@ -16,9 +16,12 @@ import React, {useEffect, useState} from "react";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
-import {api} from "../api/API"
-import {useRecoilState} from "recoil";
-import {ErrorState, IError} from "../states/error";
+import {api, InterfacesAPI} from "../api/API"
+import {useRecoilState} from "recoil"
+import {ErrorState, IError} from "../states/error"
+import {ConfigState} from "../states/Config"
+import {useNavigate} from "react-router-dom"
+import jwt_decode, { JwtPayload }  from "jwt-decode"
 
 
 interface ILoginForm {
@@ -28,13 +31,15 @@ interface ILoginForm {
   captcha?: string
 }
 
-export default function SignUpAdmin() {
+export default function AdminSignUp() {
   const {t} = useTranslation();
 
   const form = useForm<ILoginForm>()
 
   const [show, setShow] = useState(false)
   const [, setError] = useRecoilState<IError>(ErrorState);
+  const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
+  const navigate = useNavigate();
 
   const handleClick = () => setShow(!show)
 
@@ -53,7 +58,12 @@ export default function SignUpAdmin() {
       return
     }
 
-    api.SignUpAdmin({email: email, password: password}).then(() => {
+    api.SignUpAdmin({email: email, password: password}).then((response) => {
+      const access_token = response.data.access_token
+      const refresh_token = response.data.refresh_token
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('refresh_token', refresh_token);
+      window.location.reload()
     }).catch((err) => {
       setError({
         title: err.message,
@@ -63,21 +73,36 @@ export default function SignUpAdmin() {
   }
 
   useEffect(() => {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJGYXN0SUQiLCJqdGkiOiIzYzI5NGJlMC1kNTNhLTQ2NjYtYjk3MC03ZTU4ZjMzMjllYzkiLCJpYXQiOjE2OTcyNDE3ODEsImV4cCI6MTY5NzMyODE4MSwiYXVkIjoiYXV0aCJ9._CsqyT1_56haoYeVKjxYbCAJKmG02GhcsGD59-yPOCU'
+    const decoded = jwt_decode<JwtPayload>(token);
+    console.log(decoded.exp)
+
+
+    if (config.is_setup) {
+      navigate('/')
+    }
+
     document.title = t('create_an_administrator')
     form.setFocus('email')
-  }, [form, t])
+  }, [form, t, config, navigate])
+
+
+  const styleBgColor1 = useColorModeValue('gray.50', 'gray.800')
+  const styleBgColor2 = useColorModeValue('white', 'gray.800')
+
 
   return (
+    <>
     <Flex
       minH={'100vh'}
       align={'center'}
       justify={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}>
+      bg={styleBgColor1}>
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={3}>
         <Stack align={'center'}>
           <Heading fontSize={'3xl'}>{t('create_an_administrator')}</Heading>
         </Stack>
-        <Box rounded={'lg'} bg={useColorModeValue('white', 'gray.700')} boxShadow={'lg'} p={8}>
+        <Box minW={'350px'} rounded={'lg'} bg={styleBgColor2} boxShadow={'lg'} p={8}>
 
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -163,5 +188,6 @@ export default function SignUpAdmin() {
         </Box>
       </Stack>
     </Flex>
+    </>
   )
 }
