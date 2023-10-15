@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
-import {useRecoilState, useRecoilValue} from "recoil"
-import {ConfigSelector, ConfigState} from "./states/Config"
+import {useRecoilState} from "recoil"
+import {ConfigState} from "./states/Config"
 import Loader from "./layers/Loader"
 import './i18n';
 import {ErrorState, IError} from "./states/error";
