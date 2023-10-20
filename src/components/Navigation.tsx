@@ -19,7 +19,6 @@ import {
   ListItem,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Text,
@@ -28,19 +27,19 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import {BsGithub, BsList, BsSun, BsSunFill} from "react-icons/bs";
-import {MdLogout, MdOutlineLockOpen, MdOutlineVpnKey, MdPortrait, MdSettings} from "react-icons/md";
+import {MdLogout, MdSettings} from "react-icons/md";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {IconType} from "react-icons";
-import {Link as ReactRouterLink} from 'react-router-dom'
+import {Link as ReactRouterLink, useNavigate} from 'react-router-dom'
 
 
-const AvatarMenuList: { icon: JSX.Element, name: string, link: string }[] = [
-  {icon: <MdSettings size={16}/>, name: 'profile', link: '/signup'},
-  {icon: <MdPortrait size={16}/>, name: 'avatar', link: '/signup'},
-  {icon: <MdOutlineLockOpen size={16}/>, name: 'security', link: '/signup'},
-  {icon: <MdOutlineVpnKey size={16}/>, name: 'change_password', link: '/signup'},
-];
+// const AvatarMenuList: { icon: JSX.Element, name: string, link: string }[] = [
+//   {icon: <MdSettings size={16}/>, name: 'profile', link: '/signup'},
+//   {icon: <MdPortrait size={16}/>, name: 'avatar', link: '/signup'},
+//   {icon: <MdOutlineLockOpen size={16}/>, name: 'security', link: '/signup'},
+//   {icon: <MdOutlineVpnKey size={16}/>, name: 'change_password', link: '/signup'},
+// ];
 
 
 const CommonMenuList: { icon: IconType, name: string, link: string }[] = [
@@ -193,6 +192,13 @@ export const NavigationMenuUpper = () => {
 
 const AvatarMenu = () => {
   const {t} = useTranslation();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    navigate('/signin/')
+  }
 
   return (
     <Menu arrowPadding={100}>
@@ -207,15 +213,15 @@ const AvatarMenu = () => {
       />
 
       <MenuList>
-        {AvatarMenuList.map(({icon, name, link}, index) =>
-          <ChakraLink as={ReactRouterLink} to={link} key={index}>
-            <MenuItem icon={icon}>
-              {t(name.toString())}
-            </MenuItem>
-          </ChakraLink>
-        )}
-        <MenuDivider/>
-        <MenuItem icon={<MdLogout size={16}/>}>{t('logout')}</MenuItem>
+        {/*{AvatarMenuList.map(({icon, name, link}, index) =>*/}
+        {/*  <ChakraLink as={ReactRouterLink} to={link} key={index}>*/}
+        {/*    <MenuItem icon={icon}>*/}
+        {/*      {t(name.toString())}*/}
+        {/*    </MenuItem>*/}
+        {/*  </ChakraLink>*/}
+        {/*)}*/}
+        {/*<MenuDivider/>*/}
+        <MenuItem icon={<MdLogout size={16}/>} onClick={logout}>{t('logout')}</MenuItem>
       </MenuList>
     </Menu>
   )

@@ -13,6 +13,7 @@ export namespace InterfacesAPI {
     captcha: CaptchaType | null,
     captcha_usage: string[],
     recaptcha_site_key: string | null
+    jwt_iss: string
   }
 
   export interface SignUpAdmin {

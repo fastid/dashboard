@@ -9,5 +9,6 @@ export const ConfigState = atom<InterfacesAPI.Config>({
     captcha: null,
     captcha_usage: [],
     recaptcha_site_key: null,
+    jwt_iss: 'FastID',
   },
 })

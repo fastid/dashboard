@@ -1,10 +1,16 @@
 import {Box, Flex} from '@chakra-ui/react'
-import React from "react";
+import React, {useEffect} from "react";
 import {CommonMenu, NavigationMenuUpper} from "../components/Navigation";
 import {CheckAuth} from "../components/CheckAuth";
+import {useTranslation} from "react-i18next";
 
 
 const Dashboard = () => {
+  const {t} = useTranslation();
+
+  useEffect(() => {
+    document.title = t('dashboard')
+  }, [t])
 
   return (
     <>

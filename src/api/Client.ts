@@ -39,3 +39,10 @@ instanceAxios.interceptors.request.use(
     return config
   },
 )
+
+// instanceAxios.interceptors.response.use(function (response) {
+//   console.log(response)
+//   return response;
+// }, function (error) {
+//   return Promise.reject(error);
+// })

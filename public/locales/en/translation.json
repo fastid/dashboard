@@ -26,5 +26,10 @@
   "menu": "Menu",
   "create_an_administrator": "Create an administrator",
   "go_to_project_github": "Go to the project repository",
-  "password_dont_match_confirmation_password": "Password and password confirmation do not match"
+  "password_dont_match_confirmation_password": "Password and password confirmation do not match",
+  "dashboard": "Dashboard",
+  "unknown_error": "Unknown error",
+  "incorrect_email_address": "Incorrect email address",
+  "field_not_filled": "The field {{field}} is not filled",
+  "initial_configuration_is_done": "The initial configuration of the project has already been done"
 }
