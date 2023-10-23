@@ -21,6 +21,17 @@
   "security": "Security",
   "change_password": "Change password",
   "change_dark_theme": "Change to a dark theme",
+  "change_light_theme": "Change to a light theme",
   "close": "Close",
-  "menu": "Menu"
+  "menu": "Menu",
+  "create_an_administrator": "Create an administrator",
+  "go_to_project_github": "Go to the project repository",
+  "password_dont_match_confirmation_password": "Password and password confirmation do not match",
+  "dashboard": "Dashboard",
+  "unknown_error": "Unknown error",
+  "incorrect_email_address": "Incorrect email address",
+  "field_not_filled": "The field {{field}} is not filled",
+  "initial_configuration_is_done": "The initial configuration of the project has already been done",
+  "string_too_short": "String should have at least {{min_length}} characters",
+  "string_too_long": "String should have at most {{max_length}} characters"
 }

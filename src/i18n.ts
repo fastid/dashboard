@@ -15,7 +15,7 @@ const languageDetector = new LanguageDetector(null, {
 
 i18n.use(Backend).use(languageDetector).use(initReactI18next).init({
   fallbackLng: "en",
-  debug: process.env.NODE_ENV === 'development',
+  debug: false,
   interpolation: {
     escapeValue: false // react already safes from xss
   }

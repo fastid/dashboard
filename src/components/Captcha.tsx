@@ -9,7 +9,7 @@ import React from "react";
   https://github.com/dozoisch/react-google-recaptcha/issues/271
  */
 
-export function ReCaptcha({siteKey, tabIndex = 0}: {siteKey: string, tabIndex?: number}) {
+export function ReCaptcha({siteKey, tabIndex = 0}: { siteKey: string, tabIndex?: number }) {
   const form = useFormContext()
   const {i18n} = useTranslation();
   const {colorMode} = useColorMode()
@@ -24,7 +24,8 @@ export function ReCaptcha({siteKey, tabIndex = 0}: {siteKey: string, tabIndex?: 
     }
   }
 
-  return (<>
+  return (
+    <>
       <ReCAPTCHA
         sitekey={siteKey}
         hl={i18n.language}
