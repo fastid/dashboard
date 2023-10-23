@@ -4,6 +4,7 @@ import SignIn from "./layers/SignIn";
 import SignUp from "./layers/SignUp";
 import Dashboard from "./layers/Dashboard";
 import AdminSignUp from "./layers/AdminSignUp";
+import NotFound from "./layers/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -21,5 +22,9 @@ export const router = createBrowserRouter([
   {
     path: '/admin/signup/',
     element: <AdminSignUp/>,
+  },
+  {
+    path: '*',
+    element: <NotFound/>,
   },
 ]);

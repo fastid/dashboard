@@ -33,5 +33,6 @@
   "field_not_filled": "Поле {{field}} не заполнено",
   "initial_configuration_is_done": "Начальная конфигурация проекта уже выполнена",
   "string_too_short": "Строка должна содержать не менее {{min_length}} символов",
-  "string_too_long": "Строка должна содержать не более {{max_length}} символов"
+  "string_too_long": "Строка должна содержать не более {{max_length}} символов",
+  "back_to_dashboard": "Назад в панель управления"
 }

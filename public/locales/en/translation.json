@@ -33,5 +33,6 @@
   "field_not_filled": "The field {{field}} is not filled",
   "initial_configuration_is_done": "The initial configuration of the project has already been done",
   "string_too_short": "String should have at least {{min_length}} characters",
-  "string_too_long": "String should have at most {{max_length}} characters"
+  "string_too_long": "String should have at most {{max_length}} characters",
+  "back_to_dashboard": "Back to Dashboard"
 }
