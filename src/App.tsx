@@ -9,6 +9,7 @@ import {useTranslation} from "react-i18next";
 import {router} from "./routers";
 import {RouterProvider} from "react-router-dom";
 import {api, InterfacesAPI} from "./api/API"
+import {AxiosError} from "axios";
 
 
 export default function App() {
@@ -23,12 +24,21 @@ export default function App() {
   useEffect(() => {
     api.GetConfig().then(response => {
       setConfig({...response.data, is_init: true})
-    }).catch((err) => {
+    }).catch((err: AxiosError) => {
       setConfig({...config, is_init: true})
-      setError({
-        title: t('unable_get_project_settings'),
-        description: `request-id: ${err.response.headers.get('request-id')}`
-      })
+
+      if (err.response) {
+        setError({
+          title: t('unable_get_project_settings'),
+          description: `request-id: ${err.response.headers['request-id']}`
+        })
+      } else if (err.request) {
+        setError({
+          title: t('unable_get_project_settings'),
+          description: err.message
+        })
+      }
+
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,31 +1,23 @@
 import axios from "axios";
 import {v4 as uuidv4} from 'uuid';
 
-// interface ValidationError {
-//   eror: string;
-//   errors: Record<string, string[]>
-// }
 
-
-
-interface IValidationErrorParams {
-  any: any
-}
-
-
-interface IValidationErrorError {
-  key: string
+interface ErrorI18n {
   message: string
-  params: IValidationErrorParams
+  params: any
 }
 
-export interface IValidationErrors {
-  any: IValidationErrorError
+interface Error {
+  message: string
+  i18n: ErrorI18n
 }
 
-export interface IValidationError {
-  error?: IValidationErrorError
-  errors?: IValidationErrors
+export interface ValidationErrors {
+  errors: Record<string, Error>
+}
+
+export interface ValidationError {
+  error: Error
 }
 
 export const instanceAxios = axios.create({
@@ -41,8 +33,12 @@ instanceAxios.interceptors.request.use(
 )
 
 // instanceAxios.interceptors.response.use(function (response) {
-//   console.log(response)
 //   return response;
-// }, function (error) {
+// }, function (error: AxiosError) {
+//   if (axios.isAxiosError(error)) {
+//     console.log(error)
+//     return Promise.reject(error);
+//   }
+//
 //   return Promise.reject(error);
 // })

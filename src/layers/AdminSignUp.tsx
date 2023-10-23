@@ -21,6 +21,8 @@ import {useRecoilState} from "recoil"
 import {ErrorState, IError} from "../states/error"
 import {ConfigState} from "../states/Config"
 import {useNavigate} from "react-router-dom"
+import axios, {AxiosError} from "axios";
+import {ValidationError, ValidationErrors} from "../api/Client";
 
 
 interface ILoginForm {
@@ -66,12 +68,41 @@ export default function AdminSignUp() {
       setConfig({...config, is_setup: true})
       navigate('/')
 
-    }).catch((err) => {
-      setError({
-        title: err.message,
-        description: `request-id: ${err.response.headers.get('request-id')}`,
-      })
-    })
+    }).catch((err: AxiosError) => {
+
+      if (err.response) {
+
+        if (axios.isAxiosError<ValidationError, Record<string, unknown>>(err)) {
+          setError({
+            title: t(err.response?.data.error.i18n.message, err.response?.data.error.i18n.params),
+            description: `request-id: ${err.response?.headers['request-id'] ?? 'n/a'}`,
+          })
+        }
+
+        if (axios.isAxiosError<ValidationErrors, Record<string, unknown>>(err)) {
+
+          if (err.response?.data.errors && err.response?.data.errors.password) {
+            const message = err.response?.data.errors.password.i18n.message
+            const param = err.response?.data.errors.password.i18n.params
+            form.setError('password',{type: 'custom', message: t(message, param)})
+          }
+
+          if (err.response?.data.errors && err.response?.data.errors.email) {
+            const message = err.response?.data.errors.email.i18n.message
+            const param = err.response?.data.errors.email.i18n.params
+            form.setError('email',{type: 'custom', message: t(message, param)}
+            )
+          }
+
+        }
+
+    } else if (err.request) {
+      setError({title: err.message})
+    }
+
+
+
+  })
   }
 
   useEffect(() => {
@@ -137,8 +168,19 @@ export default function AdminSignUp() {
                       autoComplete={'on'}
                       tabIndex={2}
                       {...form.register(
+
                         "password",
-                        {required: t('password_required')},
+                        {
+                          required: t('password_required'),
+                          maxLength: {
+                            value: config.password_policy_max_length,
+                            message: t('string_too_long', {max_length: config.password_policy_max_length}),
+                          },
+                          minLength: {
+                            value: config.password_policy_min_length,
+                            message: t('string_too_short', {min_length: config.password_policy_min_length}),
+                          },
+                        },
                       )}
                     />
                     <InputRightElement>
@@ -162,7 +204,17 @@ export default function AdminSignUp() {
                       tabIndex={2}
                       {...form.register(
                         "confirm_password",
-                        {required: t('confirm_password_required')},
+                        {
+                          required: t('confirm_password_required'),
+                          maxLength: {
+                            value: config.password_policy_max_length,
+                            message: t('string_too_long', {max_length: config.password_policy_max_length}),
+                          },
+                          minLength: {
+                            value: config.password_policy_min_length,
+                            message: t('string_too_short', {min_length: config.password_policy_min_length}),
+                          },
+                        },
                       )}
                     />
                   </InputGroup>

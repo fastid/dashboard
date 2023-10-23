@@ -14,6 +14,8 @@ export namespace InterfacesAPI {
     captcha_usage: string[],
     recaptcha_site_key: string | null
     jwt_iss: string
+    password_policy_max_length: number
+    password_policy_min_length: number
   }
 
   export interface SignUpAdmin {
