@@ -62,6 +62,7 @@ export function CheckAuth() {
       }
 
       if(timestamp >= decoded_access_token.exp) {
+        console.log('reload jwt token')
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         navigate('/signin/')

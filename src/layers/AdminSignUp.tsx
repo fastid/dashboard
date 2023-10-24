@@ -143,6 +143,7 @@ export default function AdminSignUp() {
                     type="text"
                     autoComplete={'on'}
                     tabIndex={1}
+                    data-testid='email'
                     {...form.register(
                       "email",
                       {
@@ -167,6 +168,7 @@ export default function AdminSignUp() {
                       type={show ? 'text' : 'password'}
                       autoComplete={'on'}
                       tabIndex={2}
+                      data-testid='password'
                       {...form.register(
 
                         "password",
@@ -184,7 +186,7 @@ export default function AdminSignUp() {
                       )}
                     />
                     <InputRightElement>
-                      <Button variant={'ghost'} onClick={handleClick}>
+                      <Button tabIndex={-1} variant={'ghost'} onClick={handleClick}>
                         {show ? <ViewIcon/> : <ViewOffIcon/>}
                       </Button>
                     </InputRightElement>
@@ -201,7 +203,8 @@ export default function AdminSignUp() {
                       // pr='4.5rem'
                       type={show ? 'text' : 'password'}
                       autoComplete={'on'}
-                      tabIndex={2}
+                      tabIndex={3}
+                      data-testid='confirm-password'
                       {...form.register(
                         "confirm_password",
                         {
@@ -227,6 +230,7 @@ export default function AdminSignUp() {
                     type={'submit'}
                     colorScheme={"brand"}
                     tabIndex={4}
+                    data-testid='button-sign-up'
                     _hover={{bg: 'brand.500'}}
                   >{t('sign_up')}</Button>
                 </Stack>
