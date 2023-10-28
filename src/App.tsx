@@ -8,7 +8,7 @@ import {ToastError} from "./components/ToastError";
 import {useTranslation} from "react-i18next";
 import {router} from "./routers";
 import {RouterProvider} from "react-router-dom";
-import {api, InterfacesAPI} from "./api/API"
+import {InterfacesAPI, API} from "./api/API"
 import {AxiosError} from "axios";
 
 
@@ -21,28 +21,20 @@ export default function App() {
     setConfig,
   ] = useRecoilState<InterfacesAPI.Config>(ConfigState)
 
+  const restApi = new API()
+
   useEffect(() => {
-    api.GetConfig().then(response => {
-      setConfig({...response.data, is_init: true})
-    }).catch((err: AxiosError) => {
-      setConfig({...config, is_init: true})
 
-      if (err.response) {
-        setError({
-          title: t('unable_get_project_settings'),
-          description: `request-id: ${err.response.headers['request-id']}`
-        })
-      } else if (err.request) {
-        setError({
-          title: t('unable_get_project_settings'),
-          description: err.message
-        })
-      }
+    restApi.t = t
+    restApi.setError = setError
 
-    })
+    restApi.Config().then(response => {
+        setConfig({...response, is_init: true})
+    }).catch((error: AxiosError) => setConfig({...config, is_init: true}))
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   if (!config.is_init) {
     return (<Loader/>)

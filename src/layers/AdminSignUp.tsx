@@ -1,28 +1,28 @@
 import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Stack,
-  Text,
-  useColorModeValue,
+    Box,
+    Button,
+    Flex,
+    FormControl,
+    FormLabel,
+    Heading,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Stack,
+    Text,
+    useColorModeValue,
 } from '@chakra-ui/react'
 import React, {useEffect, useState} from "react";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
-import {api, InterfacesAPI} from "../api/API"
+import {API, InterfacesAPI} from "../api/API"
 import {useRecoilState} from "recoil"
 import {ErrorState, IError} from "../states/error"
 import {ConfigState} from "../states/Config"
 import {useNavigate} from "react-router-dom"
 import axios, {AxiosError} from "axios";
-import {ValidationError, ValidationErrors} from "../api/Client";
+import {ValidationErrors} from "../api/Client";
 
 
 interface ILoginForm {
@@ -44,7 +44,12 @@ export default function AdminSignUp() {
 
   const handleClick = () => setShow(!show)
 
+  const restApi = new API()
+
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
+    restApi.t = t
+    restApi.setError = setError
+
     form.clearErrors()
 
     const password = data.password.trim()
@@ -59,50 +64,34 @@ export default function AdminSignUp() {
       return
     }
 
-    api.SignUpAdmin({email: email, password: password}).then((response) => {
-      const access_token = response.data.access_token
-      const refresh_token = response.data.refresh_token
-      localStorage.setItem('access_token', access_token);
-      localStorage.setItem('refresh_token', refresh_token);
+    restApi.AdminSignUp({email: email, password: password}).then(response=>{
 
+      const access_token = response.access_token
+      const refresh_token = response.refresh_token
+      localStorage.setItem('access_token', access_token)
+      localStorage.setItem('refresh_token', refresh_token)
       setConfig({...config, is_setup: true})
       navigate('/')
 
-    }).catch((err: AxiosError) => {
+    }).catch((error: AxiosError) => {
 
-      if (err.response) {
-
-        if (axios.isAxiosError<ValidationError, Record<string, unknown>>(err)) {
-          setError({
-            title: t(err.response?.data.error.i18n.message, err.response?.data.error.i18n.params),
-            description: `request-id: ${err.response?.headers['request-id'] ?? 'n/a'}`,
-          })
+      if (axios.isAxiosError<ValidationErrors, Record<string, unknown>>(error)) {
+        if (error.response?.data.errors && error.response?.data.errors.password) {
+          const message = error.response?.data.errors.password.i18n.message
+          const param = error.response?.data.errors.password.i18n.params
+          form.setError('password',{type: 'custom', message: t(message, param)})
         }
 
-        if (axios.isAxiosError<ValidationErrors, Record<string, unknown>>(err)) {
-
-          if (err.response?.data.errors && err.response?.data.errors.password) {
-            const message = err.response?.data.errors.password.i18n.message
-            const param = err.response?.data.errors.password.i18n.params
-            form.setError('password',{type: 'custom', message: t(message, param)})
-          }
-
-          if (err.response?.data.errors && err.response?.data.errors.email) {
-            const message = err.response?.data.errors.email.i18n.message
-            const param = err.response?.data.errors.email.i18n.params
-            form.setError('email',{type: 'custom', message: t(message, param)}
-            )
-          }
-
+        if (error.response?.data.errors && error.response?.data.errors.email) {
+          const message = error.response?.data.errors.email.i18n.message
+          const param = error.response?.data.errors.email.i18n.params
+          form.setError('email',{type: 'custom', message: t(message, param)}
+          )
         }
-
-    } else if (err.request) {
-      setError({title: err.message})
-    }
-
-
-
-  })
+      } else if (error.request) {
+        setError({title: error.message})
+      }
+    })
   }
 
   useEffect(() => {

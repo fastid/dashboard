@@ -23,8 +23,18 @@ export function CheckAuth() {
     const access_token = localStorage.getItem('access_token')
     const refresh_token = localStorage.getItem('refresh_token')
 
-    let d = new Date();
-    const timestampUnFormat = d.valueOf() / 1000
+    const nowDate = new Date();
+    const utcTimestamp = Date.UTC(
+        nowDate.getUTCFullYear(),
+        nowDate.getUTCMonth(),
+        nowDate.getUTCDate(),
+        nowDate.getUTCHours(),
+        nowDate.getUTCMinutes(),
+        nowDate.getUTCSeconds(),
+        nowDate.getUTCMilliseconds(),
+    )
+
+    const timestampUnFormat = utcTimestamp.valueOf() / 1000
     const timestamp = Number(timestampUnFormat.toFixed(0))
 
     if (!config.is_setup) {

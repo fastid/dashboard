@@ -15,13 +15,15 @@ import {
 } from '@chakra-ui/react'
 import React, {useEffect, useState} from "react";
 import {useRecoilState} from "recoil";
-import {InterfacesAPI} from "../api/API";
+import {api, InterfacesAPI} from "../api/API";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import {ReCaptcha} from "../components/Captcha";
 import {ConfigState} from "../states/Config";
 import {Link as RouterLink} from "react-router-dom";
+import {AxiosError} from "axios/index";
+import {ErrorState, IError} from "../states/error";
 
 interface ILoginForm {
   email: string
@@ -34,13 +36,24 @@ export default function SignIn() {
   const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
 
   const form = useForm<ILoginForm>()
+  const [, setError] = useRecoilState<IError>(ErrorState);
 
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
   // const [, setError] = useRecoilState<IError>(ErrorState);
 
-  const onSubmit: SubmitHandler<ILoginForm> = () => {
+  const onSubmit: SubmitHandler<ILoginForm> = (data, event) => {
+    api.SignIn({
+      email: data.email,
+      password: data.password,
+      captcha: data.captcha}
+    ).then(response => {
+      console.log(response)
+    }).catch((err: AxiosError) => {
+      setError({title: err.message})
+    })
+
     // form.setError('email', { type: 'custom', message: 'Ошибка валидации' })
     // Authentication({
     //   email: data.email,

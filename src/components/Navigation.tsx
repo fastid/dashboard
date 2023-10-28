@@ -56,8 +56,7 @@ export const NavigationMenuUpper = () => {
   return (
     <>
       <Image title={'FastID'} ml={3} w={{base: '140px', 'sm': '100px', 'md': '100px', 'lg': '140px'}}
-             src='/fastid-logo.svg' alt='FastID'/>
-
+             src='/logo.svg' alt='FastID'/>
       <HStack flex={1}>
       </HStack>
 
