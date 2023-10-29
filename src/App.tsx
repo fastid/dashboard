@@ -30,7 +30,7 @@ export default function App() {
 
     restApi.Config().then(response => {
         setConfig({...response, is_init: true})
-    }).catch((error: AxiosError) => setConfig({...config, is_init: true}))
+    }).catch(() => setConfig({...config, is_init: true}))
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

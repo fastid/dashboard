@@ -22,7 +22,7 @@ import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import {ReCaptcha} from "../components/Captcha";
 import {ConfigState} from "../states/Config";
 import {Link as RouterLink} from "react-router-dom";
-import {AxiosError} from "axios/index";
+import {AxiosError} from "axios";
 import {ErrorState, IError} from "../states/error";
 
 interface ILoginForm {
@@ -43,7 +43,7 @@ export default function SignIn() {
 
   // const [, setError] = useRecoilState<IError>(ErrorState);
 
-  const onSubmit: SubmitHandler<ILoginForm> = (data, event) => {
+  const onSubmit: SubmitHandler<ILoginForm> = (data) => {
     api.SignIn({
       email: data.email,
       password: data.password,
