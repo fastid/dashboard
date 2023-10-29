@@ -9,8 +9,6 @@ import {useTranslation} from "react-i18next";
 import {router} from "./routers";
 import {RouterProvider} from "react-router-dom";
 import {InterfacesAPI, API} from "./api/API"
-import {AxiosError} from "axios";
-
 
 export default function App() {
   const [, setError] = useRecoilState<IError>(ErrorState);
