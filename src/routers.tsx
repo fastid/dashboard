@@ -3,7 +3,6 @@ import {createBrowserRouter} from "react-router-dom";
 import SignIn from "./layers/SignIn";
 import SignUp from "./layers/SignUp";
 import Dashboard from "./layers/Dashboard";
-import AdminSignUp from "./layers/AdminSignUp";
 import NotFound from "./layers/NotFound";
 
 export const router = createBrowserRouter([
@@ -18,10 +17,6 @@ export const router = createBrowserRouter([
   {
     path: '/signup/',
     element: <SignUp/>,
-  },
-  {
-    path: '/admin/signup/',
-    element: <AdminSignUp/>,
   },
   {
     path: '*',

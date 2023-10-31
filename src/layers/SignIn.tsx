@@ -15,15 +15,17 @@ import {
 } from '@chakra-ui/react'
 import React, {useEffect, useState} from "react";
 import {useRecoilState} from "recoil";
-import {api, InterfacesAPI} from "../api/API";
+import {API, InterfacesAPI} from "../api/API";
 import {useTranslation} from 'react-i18next';
 import {FormProvider, SubmitHandler, useForm,} from "react-hook-form"
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import {ReCaptcha} from "../components/Captcha";
 import {ConfigState} from "../states/Config";
-import {Link as RouterLink} from "react-router-dom";
-import {AxiosError} from "axios";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
+import axios, {AxiosError} from "axios";
 import {ErrorState, IError} from "../states/error";
+import {ValidationErrors} from "../api/Client";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface ILoginForm {
   email: string
@@ -34,6 +36,7 @@ interface ILoginForm {
 export default function SignIn() {
   const {t} = useTranslation();
   const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
+  const navigate = useNavigate();
 
   const form = useForm<ILoginForm>()
   const [, setError] = useRecoilState<IError>(ErrorState);
@@ -41,48 +44,47 @@ export default function SignIn() {
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
+  const recaptchaRef = React.createRef<ReCAPTCHA>()
+
   // const [, setError] = useRecoilState<IError>(ErrorState);
+  const restApi = new API()
 
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
-    api.SignIn({
+    restApi.t = t
+    restApi.setError = setError
+
+    form.clearErrors()
+    recaptchaRef.current?.reset()
+
+    restApi.SignIn({
       email: data.email,
       password: data.password,
       captcha: data.captcha}
     ).then(response => {
-      console.log(response)
-    }).catch((err: AxiosError) => {
-      setError({title: err.message})
+
+      const access_token = response.access_token
+      const refresh_token = response.refresh_token
+      localStorage.setItem('access_token', access_token)
+      localStorage.setItem('refresh_token', refresh_token)
+      navigate('/')
+
+    }).catch((error: AxiosError) => {
+
+      if (axios.isAxiosError<ValidationErrors, Record<string, unknown>>(error)) {
+        if (error.response?.data.errors && error.response?.data.errors.password) {
+          const message = error.response?.data.errors.password.i18n.message
+          const param = error.response?.data.errors.password.i18n.params
+          form.setError('password',{type: 'custom', message: t(message, param)})
+        }
+
+        if (error.response?.data.errors && error.response?.data.errors.email) {
+          const message = error.response?.data.errors.email.i18n.message
+          const param = error.response?.data.errors.email.i18n.params
+          form.setError('email',{type: 'custom', message: t(message, param)}
+          )
+        }
+      }
     })
-
-    // form.setError('email', { type: 'custom', message: 'Ошибка валидации' })
-    // Authentication({
-    //   email: data.email,
-    //   password: data.password,
-    //   captcha: data.captcha,
-    // }).then((response) => {
-    //   setError({title: 'Not implemented'})
-    //   console.log(response)
-    // }).catch((err: Error | AxiosError<IValidationError>)=>{
-
-    // if (isAxiosError(err) && err.response) {
-    //   console.log(err)
-    //
-    //   if (err.response && err.response.data.error) {
-    //     setError({title: t(err.response.data.error.key, err.response.data.error.params)})
-    //   }
-    //   else {
-    //     // setError({title: t(err.message, err.message)})
-    //   }
-    // } else if (isAxiosError(err) && err.request) {
-    //   console.log(err)
-    // } else {
-    //   console.log(err)
-    // }
-    //   console.log(err)
-    //   setError({title: 'Not implemented'})
-    //
-    // })
-
   }
 
   useEffect(() => {
@@ -172,7 +174,7 @@ export default function SignIn() {
                   {config.captcha === InterfacesAPI.CaptchaType.recaptcha &&
                     config.recaptcha_site_key &&
                     config.captcha_usage.includes('signin') &&
-                    <ReCaptcha siteKey={config.recaptcha_site_key} tabIndex={3}/>
+                    <ReCaptcha siteKey={config.recaptcha_site_key} tabIndex={3} recaptchaRef={recaptchaRef}/>
                   }
 
                   <Button

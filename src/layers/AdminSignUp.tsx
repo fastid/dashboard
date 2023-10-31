@@ -70,7 +70,7 @@ export default function AdminSignUp() {
       const refresh_token = response.refresh_token
       localStorage.setItem('access_token', access_token)
       localStorage.setItem('refresh_token', refresh_token)
-      setConfig({...config, is_setup: true})
+      setConfig({...config})
       navigate('/')
 
     }).catch((error: AxiosError) => {
@@ -95,10 +95,6 @@ export default function AdminSignUp() {
   }
 
   useEffect(() => {
-    if (config.is_setup) {
-      navigate('/')
-    }
-
     document.title = t('create_an_administrator')
     form.setFocus('email')
   }, [form, t, config, navigate])

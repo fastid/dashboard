@@ -13,7 +13,6 @@ export namespace InterfacesAPI {
 
   export interface Config {
     is_init: boolean
-    is_setup: boolean
     captcha: CaptchaType | null,
     captcha_usage: string[],
     recaptcha_site_key: string | null
@@ -33,28 +32,47 @@ export namespace InterfacesAPI {
     access_token: string
     refresh_token: string
   }
+
+  export interface RefreshToken {
+    access_token: string
+    refresh_token: string
+    expires_in: number
+    token_type: string
+  }
+
+  export interface UserInfo {
+    user_id: number
+    email: string
+  }
+
 }
 
 
 export class API {
   t?: TFunction;
   setError?: SetterOrUpdater<IError>;
+  token?: string;
 
   GlobalErrorMessage = (error: AxiosError) =>{
+
     if (error.response && this.setError) {
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error) && error.response.data.error) {
+
         this.setError({
-          title: this.t(error.response.data.error.i18n.message, error.response.data.error.i18n.params),
-          description: `request-id: ${error.response?.headers['request-id'] ?? 'n/a'}`,
+          title: this.t('error'),
+          description: this.t(error.response.data.error.i18n.message, error.response.data.error.i18n.params),
         })
-      } else if(error.message) {
-          this.setError({
-              title: error.message,
-          })
+
+      } else if(error.message && !error.response) {
+        this.setError({
+          title: this.t('error'),
+          description: error.message
+        })
       }
     } else if (error.request && this.setError) {
       this.setError({
-        title: error.message,
+        title: this.t('error'),
+        description: error.message
       })
     }
   }
@@ -76,6 +94,22 @@ export class API {
       throw error;
   });
 
+  UserInfo = () => instanceAxios.post<InterfacesAPI.UserInfo>('/users/info/')
+    .then(response => response.data)
+    .catch((error: AxiosError) => {
+      this.GlobalErrorMessage(error)
+      throw error;
+    })
+
+  RefreshToken = (
+    {refresh_token} : { refresh_token: string}
+  ) => instanceAxios.post<InterfacesAPI.RefreshToken>('/users/refresh_token/', {refresh_token: refresh_token})
+    .then(response => response.data)
+    .catch((error: AxiosError) => {
+      this.GlobalErrorMessage(error)
+      throw error;
+  })
+
   AdminSignUp = (
     {email, password} : { email: string, password: string}
   ) => instanceAxios.post<InterfacesAPI.SignUpAdmin>('/admin/signup/', {email: email, password: password})
@@ -85,14 +119,16 @@ export class API {
       throw error;
   })
 
-  SignIn({email, password, captcha} : { email: string, password: string, captcha?: string}) {
-    return instanceAxios.post<InterfacesAPI.SignIn>('/users/signin/', {
-      email: email,
-      password: password,
-      captcha: captcha,
-    })
-
-  }
+  SignIn = (
+    {email, password, captcha} : { email: string, password: string, captcha?: string}
+  ) => instanceAxios.post<InterfacesAPI.SignIn>('/users/signin/', {
+    email: email,
+    password: password,
+    captcha: captcha,
+  }).then(response => response.data).catch((error: AxiosError) => {
+    this.GlobalErrorMessage(error)
+    throw error;
+  })
 
 
 }

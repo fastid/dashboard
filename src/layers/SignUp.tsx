@@ -22,6 +22,7 @@ import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import {ReCaptcha} from "../components/Captcha";
 import {ConfigState} from "../states/Config";
 import {Link as RouterLink} from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface ILoginForm {
   email: string
@@ -38,6 +39,8 @@ export default function SignUp() {
 
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
+
+  const recaptchaRef = React.createRef<ReCAPTCHA>()
 
   // const [, setError] = useRecoilState<IError>(ErrorState);
 
@@ -174,7 +177,7 @@ export default function SignUp() {
                   {config.captcha === InterfacesAPI.CaptchaType.recaptcha &&
                     config.recaptcha_site_key &&
                     config.captcha_usage.includes('signup') &&
-                    <ReCaptcha siteKey={config.recaptcha_site_key} tabIndex={3}/>
+                    <ReCaptcha siteKey={config.recaptcha_site_key} tabIndex={3} recaptchaRef={recaptchaRef}/>
                   }
 
                   <Button

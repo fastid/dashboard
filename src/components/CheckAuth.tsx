@@ -1,9 +1,12 @@
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import {useRecoilState} from "recoil";
-import {InterfacesAPI} from "../api/API";
+import {API, InterfacesAPI} from "../api/API";
 import {ConfigState} from "../states/Config";
 import {useEffect} from "react";
+import {useTranslation} from "react-i18next";
+import {ErrorState, IError} from "../states/error";
+import {AxiosError} from "axios/index";
 
 export interface JwtPayload {
   iss: string;
@@ -17,9 +20,16 @@ export interface JwtPayload {
 
 export function CheckAuth() {
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
+  const [, setError] = useRecoilState<IError>(ErrorState);
+
 
   useEffect(() => {
+    const restApi = new API()
+    restApi.t = t
+    restApi.setError = setError
+
     const access_token = localStorage.getItem('access_token')
     const refresh_token = localStorage.getItem('refresh_token')
 
@@ -37,53 +47,43 @@ export function CheckAuth() {
     const timestampUnFormat = utcTimestamp.valueOf() / 1000
     const timestamp = Number(timestampUnFormat.toFixed(0))
 
-    if (!config.is_setup) {
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('refresh_token')
-      navigate('/admin/signup/')
-      return
-    }
-
     if(access_token && refresh_token){
       const decoded_access_token = jwt_decode<JwtPayload>(access_token);
       const decoded_refresh_token = jwt_decode<JwtPayload>(refresh_token);
 
       if(decoded_access_token.iss !== config.jwt_iss) {
-        console.error(`JWT token access_token not match ${config.jwt_iss}`)
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         navigate('/signin/')
-        return
       }
 
       if(decoded_refresh_token.iss !== config.jwt_iss) {
-        console.error(`JWT token refresh_token not match ${config.jwt_iss}`)
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         navigate('/signin/')
-        return
       }
 
       if(timestamp >= decoded_refresh_token.exp) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         navigate('/signin/')
-        return
       }
 
       if(timestamp >= decoded_access_token.exp) {
-        console.log('reload jwt token')
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
-        navigate('/signin/')
-        return
+        restApi.RefreshToken({refresh_token:refresh_token}).then(response=>{
+          const access_token = response.access_token
+          const refresh_token = response.refresh_token
+          localStorage.setItem('access_token', access_token)
+          localStorage.setItem('refresh_token', refresh_token)
+        }).catch((error: AxiosError) => {})
+        navigate('/')
       }
     }
     else {
       navigate('/signin/')
       return
     }
-  }, [config.is_setup, navigate, config])
+  }, [navigate, config, t, setError])
 
   return <></>
 }
