@@ -75,7 +75,7 @@ export function CheckAuth() {
           const refresh_token = response.refresh_token
           localStorage.setItem('access_token', access_token)
           localStorage.setItem('refresh_token', refresh_token)
-        }).catch((error: AxiosError) => {})
+        }).catch(() => {})
         navigate('/')
       }
     }
