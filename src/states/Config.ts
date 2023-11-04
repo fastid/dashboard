@@ -1,6 +1,5 @@
-import {atom, selector} from "recoil";
+import {atom} from "recoil";
 import {InterfacesAPI} from "../api/API";
-import {instanceAxios} from "../api/Client";
 
 export const ConfigState = atom<InterfacesAPI.Config>({
   key: 'Config',

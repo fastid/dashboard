@@ -32,7 +32,6 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {IconType} from "react-icons";
 import {Link as ReactRouterLink, useNavigate} from 'react-router-dom'
-import {useResetRecoilState} from "recoil";
 
 
 // const AvatarMenuList: { icon: JSX.Element, name: string, link: string }[] = [
