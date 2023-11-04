@@ -1,9 +1,8 @@
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
-import {useRecoilState, useResetRecoilState} from "recoil";
+import {useRecoilState} from "recoil";
 import {API, InterfacesAPI} from "../api/API";
 import {ConfigState} from "../states/Config";
-import {TokenState} from "../states/Token";
 import {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {ErrorState, IError} from "../states/error";

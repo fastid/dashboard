@@ -83,24 +83,12 @@ export class API {
   Config = () => instanceAxios.get<InterfacesAPI.Config>('/config/')
     .then(response=> response.data)
     .catch((error: AxiosError) => {
-      // if (error.response && this.t && this.setError) {
-      //   this.setError({
-      //     title: this.t('unable_get_project_settings'),
-      //     description: `request-id: ${error.response.headers['request-id']}`
-      //   })
-      // } else if (error.request && this.t && this.setError) {
-      //   this.setError({
-      //     title: this.t('unable_get_project_settings'),
-      //     description: error.message
-      //   })
-      // }
       throw error
-  });
+    });
 
   UserInfo = () => instanceAxios.get<InterfacesAPI.UserInfo>('/users/info/')
     .then(response=> response.data)
     .catch((error: AxiosError) => {
-      // this.GlobalErrorMessage(error)
       throw error;
     })
 
@@ -109,7 +97,6 @@ export class API {
   ) => instanceAxios.post<InterfacesAPI.RefreshToken>('/users/refresh_token/', {refresh_token: refresh_token})
     .then(response => response.data)
     .catch((error: AxiosError) => {
-      // this.GlobalErrorMessage(error)
       throw error;
   })
 
@@ -118,7 +105,6 @@ export class API {
   ) => instanceAxios.post<InterfacesAPI.SignUpAdmin>('/admin/signup/', {email: email, password: password})
     .then(response=> response.data)
     .catch((error: AxiosError) => {
-      // this.GlobalErrorMessage(error)
       throw error;
   })
 
@@ -129,7 +115,6 @@ export class API {
     password: password,
     captcha: captcha,
   }).then(response => response.data).catch((error: AxiosError) => {
-    // this.GlobalErrorMessage(error)
     throw error;
   })
 
