@@ -32,6 +32,8 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {IconType} from "react-icons";
 import {Link as ReactRouterLink, useNavigate} from 'react-router-dom'
+import {useResetRecoilState} from "recoil";
+import {TokenState} from "../states/Token";
 
 
 // const AvatarMenuList: { icon: JSX.Element, name: string, link: string }[] = [
@@ -43,6 +45,7 @@ import {Link as ReactRouterLink, useNavigate} from 'react-router-dom'
 
 
 const CommonMenuList: { icon: IconType, name: string, link: string }[] = [
+  {icon: MdSettings, name: 'Dashboard', link: '/'},
   {icon: MdSettings, name: 'profile', link: '/signup'},
   {icon: MdSettings, name: 'change_password', link: '/signup'},
 ];
@@ -192,10 +195,12 @@ export const NavigationMenuUpper = () => {
 const AvatarMenu = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const resetToken = useResetRecoilState(TokenState)
 
   const logout = () => {
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
+    resetToken()
     navigate('/signin/')
   }
 

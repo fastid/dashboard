@@ -1,31 +1,69 @@
-import {Box, Flex} from '@chakra-ui/react'
+import {Box, Button, Flex} from '@chakra-ui/react'
 import React, {useEffect} from "react";
 import {CommonMenu, NavigationMenuUpper} from "../components/Navigation";
-import {CheckAuth} from "../components/CheckAuth";
 import {useTranslation} from "react-i18next";
+import {useRecoilState} from "recoil";
+import {API, InterfacesAPI} from "../api/API";
+import {TokenState} from "../states/Token";
+import {AxiosError} from "axios";
 
 
-const Dashboard = () => {
+export const Dashboard = () => {
   const {t} = useTranslation();
+  const [token] = useRecoilState<InterfacesAPI.Token>(TokenState)
 
-  useEffect(() => {
-    document.title = t('dashboard')
-  }, [t])
+    const GetConfig = () => {
+      const api = new API()
+      const access_token = localStorage.getItem('access_token')
 
-  return (
-    <>
-      <CheckAuth />
-      <Flex borderBottom={'1px'} borderBottomColor={'gray.200'}>
-        <NavigationMenuUpper/>
-      </Flex>
+      // if (access_token) {
+      //   api.token = access_token
+      //   console.log(`save api token ${access_token}`)
+      // }
 
-      <Flex w={'100%'}>
-        <CommonMenu/>
-        <Box p={5} w={'100%'}>ddd</Box>
+      api.UserInfo().then(response => {
+        console.log(response)
+      }).catch((error: AxiosError) => {
+        console.log(error)
+      })
 
-      </Flex>
-    </>
-  )
-}
 
-export default Dashboard
+      // const token = localStorage.getItem('access_token')
+      //
+      // const api = new API()
+      // if(token) {
+      //   console.log(token)
+      //   api.token = token
+      // }
+      //
+      // api.UserInfo().then(response=> {
+      //   console.log(response)
+      // }).catch((error: AxiosError) => {
+      //   console.log(error)
+      // })
+    }
+
+    useEffect(() => {
+
+      document.title = t('dashboard')
+    }, [t])
+
+    return (
+      <>
+        <Flex borderBottom={'1px'} borderBottomColor={'gray.200'}>
+          <NavigationMenuUpper/>
+        </Flex>
+
+        <Flex w={'100%'}>
+          <CommonMenu/>
+          <Box p={5} w={'100%'}>
+            access_token - {token.access_token}<br/>
+            refresh_token - {token.refresh_token}<br/>
+            <Button onClick={GetConfig}>dddd</Button>
+          </Box>
+
+        </Flex>
+      </>
+    )
+  }
+

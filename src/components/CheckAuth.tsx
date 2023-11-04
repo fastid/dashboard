@@ -1,8 +1,9 @@
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useResetRecoilState} from "recoil";
 import {API, InterfacesAPI} from "../api/API";
 import {ConfigState} from "../states/Config";
+import {TokenState} from "../states/Token";
 import {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {ErrorState, IError} from "../states/error";
@@ -17,17 +18,14 @@ export interface JwtPayload {
   jti?: string;
 }
 
-export function CheckAuth() {
+export const CheckAuth = () => {
   const navigate = useNavigate();
   const {t} = useTranslation();
   const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
   const [, setError] = useRecoilState<IError>(ErrorState);
 
-
   useEffect(() => {
-    const restApi = new API()
-    restApi.t = t
-    restApi.setError = setError
+    const api = new API()
 
     const access_token = localStorage.getItem('access_token')
     const refresh_token = localStorage.getItem('refresh_token')
@@ -54,29 +52,34 @@ export function CheckAuth() {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         navigate('/signin/')
+        return
       }
 
       if(decoded_refresh_token.iss !== config.jwt_iss) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         navigate('/signin/')
+        return
       }
 
       if(timestamp >= decoded_refresh_token.exp) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         navigate('/signin/')
+        return
       }
 
       if(timestamp >= decoded_access_token.exp) {
-        restApi.RefreshToken({refresh_token:refresh_token}).then(response=>{
+        api.RefreshToken({refresh_token:refresh_token}).then(response=>{
           const access_token = response.access_token
           const refresh_token = response.refresh_token
           localStorage.setItem('access_token', access_token)
           localStorage.setItem('refresh_token', refresh_token)
         }).catch(() => {})
         navigate('/')
+        return
       }
+
     }
     else {
       navigate('/signin/')

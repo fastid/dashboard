@@ -12,7 +12,6 @@ export namespace InterfacesAPI {
   }
 
   export interface Config {
-    is_init: boolean
     captcha: CaptchaType | null,
     captcha_usage: string[],
     recaptcha_site_key: string | null
@@ -40,6 +39,11 @@ export namespace InterfacesAPI {
     token_type: string
   }
 
+  export interface Token {
+    access_token: string | null
+    refresh_token: string | null
+  }
+
   export interface UserInfo {
     user_id: number
     email: string
@@ -51,27 +55,26 @@ export namespace InterfacesAPI {
 export class API {
   t?: TFunction;
   setError?: SetterOrUpdater<IError>;
-  token?: string;
 
-  GlobalErrorMessage = (error: AxiosError) =>{
+  ErrorMessage = (error: AxiosError, t: TFunction, setError: SetterOrUpdater<IError>) =>{
 
-    if (error.response && this.setError) {
+    if (error.response) {
       if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error) && error.response.data.error) {
 
-        this.setError({
-          title: this.t('error'),
-          description: this.t(error.response.data.error.i18n.message, error.response.data.error.i18n.params),
+        setError({
+          title: t('error'),
+          description: t(error.response.data.error.i18n.message, error.response.data.error.i18n.params),
         })
 
       } else if(error.message && !error.response) {
-        this.setError({
-          title: this.t('error'),
+        setError({
+          title: t('error'),
           description: error.message
         })
       }
-    } else if (error.request && this.setError) {
-      this.setError({
-        title: this.t('error'),
+    } else if (error.request) {
+      setError({
+        title: t('error'),
         description: error.message
       })
     }
@@ -80,24 +83,24 @@ export class API {
   Config = () => instanceAxios.get<InterfacesAPI.Config>('/config/')
     .then(response=> response.data)
     .catch((error: AxiosError) => {
-      if (error.response && this.t && this.setError) {
-        this.setError({
-          title: this.t('unable_get_project_settings'),
-          description: `request-id: ${error.response.headers['request-id']}`
-        })
-      } else if (error.request && this.t && this.setError) {
-        this.setError({
-          title: this.t('unable_get_project_settings'),
-          description: error.message
-        })
-      }
-      throw error;
+      // if (error.response && this.t && this.setError) {
+      //   this.setError({
+      //     title: this.t('unable_get_project_settings'),
+      //     description: `request-id: ${error.response.headers['request-id']}`
+      //   })
+      // } else if (error.request && this.t && this.setError) {
+      //   this.setError({
+      //     title: this.t('unable_get_project_settings'),
+      //     description: error.message
+      //   })
+      // }
+      throw error
   });
 
-  UserInfo = () => instanceAxios.post<InterfacesAPI.UserInfo>('/users/info/')
-    .then(response => response.data)
+  UserInfo = () => instanceAxios.get<InterfacesAPI.UserInfo>('/users/info/')
+    .then(response=> response.data)
     .catch((error: AxiosError) => {
-      this.GlobalErrorMessage(error)
+      // this.GlobalErrorMessage(error)
       throw error;
     })
 
@@ -106,7 +109,7 @@ export class API {
   ) => instanceAxios.post<InterfacesAPI.RefreshToken>('/users/refresh_token/', {refresh_token: refresh_token})
     .then(response => response.data)
     .catch((error: AxiosError) => {
-      this.GlobalErrorMessage(error)
+      // this.GlobalErrorMessage(error)
       throw error;
   })
 
@@ -115,7 +118,7 @@ export class API {
   ) => instanceAxios.post<InterfacesAPI.SignUpAdmin>('/admin/signup/', {email: email, password: password})
     .then(response=> response.data)
     .catch((error: AxiosError) => {
-      this.GlobalErrorMessage(error)
+      // this.GlobalErrorMessage(error)
       throw error;
   })
 
@@ -126,7 +129,7 @@ export class API {
     password: password,
     captcha: captcha,
   }).then(response => response.data).catch((error: AxiosError) => {
-    this.GlobalErrorMessage(error)
+    // this.GlobalErrorMessage(error)
     throw error;
   })
 

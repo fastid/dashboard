@@ -4,7 +4,8 @@ import {useRecoilState, useResetRecoilState} from "recoil";
 import {ErrorState, IError} from "../states/error";
 import {useTranslation} from "react-i18next";
 
-export function ToastError() {
+export const ToastError = () => {
+
   const {t} = useTranslation();
   const toast = useToast()
   const [error] = useRecoilState<IError>(ErrorState);
@@ -18,7 +19,7 @@ export function ToastError() {
         title: t(error.title),
         description: t(error.description),
         status: 'error',
-        duration: 15000,
+        duration: 20000,
         position: "top",
         isClosable: true,
       }

@@ -9,10 +9,10 @@ import React from "react";
   https://github.com/dozoisch/react-google-recaptcha/issues/271
  */
 
-export function ReCaptcha(
+export const ReCaptcha = (
   {siteKey, recaptchaRef, tabIndex = 0}:
   { siteKey: string, recaptchaRef: React.RefObject<ReCAPTCHA>, tabIndex?: number }
-) {
+) => {
   const form = useFormContext()
   const {i18n} = useTranslation();
   const {colorMode} = useColorMode()

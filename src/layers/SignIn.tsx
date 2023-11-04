@@ -33,7 +33,7 @@ interface ILoginForm {
   captcha?: string
 }
 
-export default function SignIn() {
+export const SignIn = () => {
   const {t} = useTranslation();
   const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
   const navigate = useNavigate();
@@ -47,16 +47,14 @@ export default function SignIn() {
   const recaptchaRef = React.createRef<ReCAPTCHA>()
 
   // const [, setError] = useRecoilState<IError>(ErrorState);
-  const restApi = new API()
 
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
-    restApi.t = t
-    restApi.setError = setError
+    const api = new API()
 
     form.clearErrors()
     recaptchaRef.current?.reset()
 
-    restApi.SignIn({
+    api.SignIn({
       email: data.email,
       password: data.password,
       captcha: data.captcha}
@@ -69,6 +67,7 @@ export default function SignIn() {
       navigate('/')
 
     }).catch((error: AxiosError) => {
+      api.ErrorMessage(error, t, setError)
 
       if (axios.isAxiosError<ValidationErrors, Record<string, unknown>>(error)) {
         if (error.response?.data.errors && error.response?.data.errors.password) {

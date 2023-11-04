@@ -1,5 +1,7 @@
 import axios from "axios";
 import {v4 as uuidv4} from 'uuid';
+import {AxiosError} from "axios";
+import {InterfacesAPI} from "./API";
 
 
 interface ErrorI18n {
@@ -25,20 +27,53 @@ export const instanceAxios = axios.create({
   timeout: Number(process.env.REACT_APP_API_TIMEOUT),
 })
 
+// const AccessToken = selector({
+//   key: 'AccessToken',
+//   get: ({get}) => {
+//     const token = get(TokenState);
+//     console.log(token.access_token)
+//   },
+// });
+
 instanceAxios.interceptors.request.use(
   (config) => {
+
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      config.headers['Authorization'] = `Bearer ${access_token}`
+    }
+
     config.headers['Request-ID'] = uuidv4()
     return config
   },
 )
 
+instanceAxios.interceptors.response.use(response => response, error => {
+  const status = error.response ? error.response.status : null
+
+  if (status === 401) {
+    const refresh_token = localStorage.getItem('refresh_token')
+
+    return axios.post<InterfacesAPI.RefreshToken>(
+      `${process.env.REACT_APP_API_BASE_URL}/users/refresh_token/`, {refresh_token: refresh_token})
+      .then(res=>{
+        localStorage.setItem('access_token', res.data.access_token)
+        localStorage.setItem('refresh_token', res.data.refresh_token)
+        error.config.headers['Authorization'] = `Bearer ${res.data.access_token}`
+        return instanceAxios(error.config)
+    })
+  }
+
+})
+
 // instanceAxios.interceptors.response.use(function (response) {
-//   return response;
-// }, function (error: AxiosError) {
-//   if (axios.isAxiosError(error)) {
-//     console.log(error)
-//     return Promise.reject(error);
-//   }
-//
-//   return Promise.reject(error);
-// })
+//   // Любой код состояния, находящийся в диапазоне 2xx, вызывает срабатывание этой функции
+//   // Здесь можете сделать что-нибудь с ответом
+//   return response
+// }, function (error) {
+//   console.log(error)
+//   // Любые коды состояния, выходящие за пределы диапазона 2xx, вызывают срабатывание этой функции
+//   // Здесь можете сделать что-то с ошибкой ответа
+//   throw error
+//   // return Promise.reject(error);
+// });
