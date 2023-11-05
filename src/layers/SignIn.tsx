@@ -72,6 +72,7 @@ export const SignIn = () => {
 
     }).catch((error: AxiosError) => {
       api.ErrorMessage(error, t, setError)
+      setIsLoader(false)
 
       if (axios.isAxiosError<ValidationErrors, Record<string, unknown>>(error)) {
         if (error.response?.data.errors && error.response?.data.errors.password) {

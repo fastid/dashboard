@@ -12,7 +12,7 @@ export const Dashboard = () => {
     const GetConfig = () => {
       const api = new API()
 
-      api.UserInfo().then(response => {
+      api.Info().then(response => {
         console.log(response)
       }).catch((error: AxiosError) => {
         console.log(error)

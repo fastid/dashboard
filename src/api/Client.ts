@@ -54,7 +54,7 @@ instanceAxios.interceptors.response.use(response => response, error => {
     const refresh_token = localStorage.getItem('refresh_token')
 
     return axios.post<InterfacesAPI.RefreshToken>(
-      `${process.env.REACT_APP_API_BASE_URL}/users/refresh_token/`, {refresh_token: refresh_token})
+      `${process.env.REACT_APP_API_BASE_URL}/refresh_token/`, {refresh_token: refresh_token})
       .then(res=>{
         localStorage.setItem('access_token', res.data.access_token)
         localStorage.setItem('refresh_token', res.data.refresh_token)

@@ -10,5 +10,6 @@ export const ConfigState = atom<InterfacesAPI.Config>({
     jwt_iss: 'FastID',
     password_policy_min_length: 6,
     password_policy_max_length: 200,
+    link_github: true,
   },
 })

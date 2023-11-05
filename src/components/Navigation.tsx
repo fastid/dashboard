@@ -32,6 +32,11 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {IconType} from "react-icons";
 import {Link as ReactRouterLink, useNavigate} from 'react-router-dom'
+import {API, InterfacesAPI} from "../api/API";
+import {AxiosError} from "axios";
+import {useRecoilState} from "recoil";
+import {ErrorState, IError} from "../states/error";
+import {ConfigState} from "../states/Config";
 
 
 // const AvatarMenuList: { icon: JSX.Element, name: string, link: string }[] = [
@@ -53,6 +58,9 @@ export const NavigationMenuUpper = () => {
   const {colorMode, toggleColorMode} = useColorMode()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const {t} = useTranslation();
+  const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
+
+  const color1 = useColorModeValue('gray.700', 'gray.400')
 
   return (
     <>
@@ -62,23 +70,24 @@ export const NavigationMenuUpper = () => {
       </HStack>
 
       <HStack pl={3} h='80px' p={3}>
-
-        <Link
-          isExternal
-          title={t('go_to_project_github')}
-          href='https://github.com/fastid/fastid'
-          display={{base: "none", lg: 'block'}}
-          mr={4}
-        >
-          <Icon
-            aria-label='Github'
-            color={useColorModeValue('gray.700', 'gray.400')}
-            mt={2}
-            w={7}
-            h={7}
-            as={BsGithub}
-          />
-        </Link>
+        { config.link_github &&
+          <Link
+            isExternal
+            title={t('go_to_project_github')}
+            href='https://github.com/fastid/fastid'
+            display={{base: "none", lg: 'block'}}
+            mr={4}
+          >
+            <Icon
+              aria-label='Github'
+              color={color1}
+              mt={2}
+              w={7}
+              h={7}
+              as={BsGithub}
+            />
+          </Link>
+        }
 
         {/* Dark && Light */}
         <Icon
@@ -193,11 +202,18 @@ export const NavigationMenuUpper = () => {
 const AvatarMenu = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const [, setError] = useRecoilState<IError>(ErrorState);
 
   const logout = () => {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    navigate('/signin/')
+    const api = new API()
+
+    api.Logout().then(response=>{
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      navigate('/signin/')
+    }).catch((error: AxiosError)=>{
+      api.ErrorMessage(error, t, setError)
+    })
   }
 
   return (

@@ -18,6 +18,7 @@ export namespace InterfacesAPI {
     jwt_iss: string
     password_policy_max_length: number
     password_policy_min_length: number
+    link_github: boolean
   }
 
   export interface SignUpAdmin {
@@ -49,6 +50,7 @@ export namespace InterfacesAPI {
     email: string
   }
 
+  export interface Empty {}
 }
 
 
@@ -86,7 +88,7 @@ export class API {
       throw error
     });
 
-  UserInfo = () => instanceAxios.get<InterfacesAPI.UserInfo>('/users/info/')
+  Info = () => instanceAxios.get<InterfacesAPI.UserInfo>('/info/')
     .then(response=> response.data)
     .catch((error: AxiosError) => {
       throw error;
@@ -94,23 +96,15 @@ export class API {
 
   RefreshToken = (
     {refresh_token} : { refresh_token: string}
-  ) => instanceAxios.post<InterfacesAPI.RefreshToken>('/users/refresh_token/', {refresh_token: refresh_token})
+  ) => instanceAxios.post<InterfacesAPI.RefreshToken>('/refresh_token/', {refresh_token: refresh_token})
     .then(response => response.data)
-    .catch((error: AxiosError) => {
-      throw error;
-  })
-
-  AdminSignUp = (
-    {email, password} : { email: string, password: string}
-  ) => instanceAxios.post<InterfacesAPI.SignUpAdmin>('/admin/signup/', {email: email, password: password})
-    .then(response=> response.data)
     .catch((error: AxiosError) => {
       throw error;
   })
 
   SignIn = (
     {email, password, captcha} : { email: string, password: string, captcha?: string}
-  ) => instanceAxios.post<InterfacesAPI.SignIn>('/users/signin/', {
+  ) => instanceAxios.post<InterfacesAPI.SignIn>('/signin/', {
     email: email,
     password: password,
     captcha: captcha,
@@ -118,6 +112,11 @@ export class API {
       throw error
   })
 
+  Logout = () => instanceAxios.post<InterfacesAPI.Empty>('/logout/', {})
+    .then(response => response.data)
+    .catch((error: AxiosError) => {
+      throw error
+    })
 
 }
 
