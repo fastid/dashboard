@@ -115,7 +115,7 @@ export class API {
     password: password,
     captcha: captcha,
   }).then(response => response.data).catch((error: AxiosError) => {
-    throw error;
+      throw error
   })
 
 

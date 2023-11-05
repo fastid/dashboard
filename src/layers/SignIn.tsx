@@ -26,6 +26,7 @@ import axios, {AxiosError} from "axios";
 import {ErrorState, IError} from "../states/error";
 import {ValidationErrors} from "../api/Client";
 import ReCAPTCHA from "react-google-recaptcha";
+import {Loader} from "./Loader";
 
 interface ILoginForm {
   email: string
@@ -42,6 +43,8 @@ export const SignIn = () => {
   const [, setError] = useRecoilState<IError>(ErrorState);
 
   const [show, setShow] = useState(false)
+  const [isLoader, setIsLoader] = useState(false)
+
   const handleClick = () => setShow(!show)
 
   const recaptchaRef = React.createRef<ReCAPTCHA>()
@@ -53,6 +56,7 @@ export const SignIn = () => {
 
     form.clearErrors()
     recaptchaRef.current?.reset()
+    setIsLoader(true)
 
     api.SignIn({
       email: data.email,
@@ -91,12 +95,19 @@ export const SignIn = () => {
     form.setFocus('email')
   }, [form, t])
 
+  const bgMode1 = useColorModeValue('gray.50', 'gray.800')
+  const bgMode2 = useColorModeValue('white', 'gray.700')
+
+  if(isLoader) {
+      return <Loader/>
+  }
+
   return (
     <Flex
       minH={'100vh'}
       align={'center'}
       justify={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}>
+      bg={bgMode1}>
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={3}>
         <Stack align={'center'}>
           <Heading fontSize={'3xl'}>{t('sign_in_account')}</Heading>
@@ -110,7 +121,7 @@ export const SignIn = () => {
           </Text>
 
         </Stack>
-        <Box minW={'350px'} rounded={'lg'} bg={useColorModeValue('white', 'gray.700')} boxShadow={'lg'} p={8}>
+        <Box minW={'350px'} rounded={'lg'} bg={bgMode2} boxShadow={'lg'} p={8}>
 
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
