@@ -207,7 +207,7 @@ const AvatarMenu = () => {
   const logout = () => {
     const api = new API()
 
-    api.Logout().then(response=>{
+    api.Logout().then(() => {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
       navigate('/signin/')
