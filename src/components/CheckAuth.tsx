@@ -3,9 +3,11 @@ import {useNavigate} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {API, InterfacesAPI} from "../api/API";
 import {ConfigState} from "../states/Config";
+import {InfoState} from "../states/Info";
 import {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {ErrorState, IError} from "../states/error";
+import {AxiosError} from "axios";
 
 export interface JwtPayload {
   iss: string;
@@ -19,8 +21,9 @@ export interface JwtPayload {
 
 export const CheckAuth = () => {
   const navigate = useNavigate();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
+  const [, setInfo] = useRecoilState<InterfacesAPI.Info>(InfoState)
   const [, setError] = useRecoilState<IError>(ErrorState);
 
   useEffect(() => {
@@ -79,12 +82,33 @@ export const CheckAuth = () => {
         return
       }
 
+      //
+      api.Info().then(response=>{
+        setInfo({
+          user_id: response.user_id,
+          email: response.email,
+          created_at: response.created_at,
+          updated_at: response.updated_at,
+          profile: response.profile,
+        })
+
+        if (response.profile.language === 'russian') {
+          i18n.changeLanguage('ru').then(res=>res).catch(err=>err)
+        } else {
+          i18n.changeLanguage('en').then(res=>res).catch(err=>err)
+        }
+
+      }).catch((error: AxiosError) => {
+        navigate('/')
+        return
+      })
+
     }
     else {
       navigate('/signin/')
       return
     }
-  }, [navigate, config, t, setError])
+  }, [])
 
   return <></>
 }

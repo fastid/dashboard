@@ -11,5 +11,7 @@ export const ConfigState = atom<InterfacesAPI.Config>({
     password_policy_min_length: 6,
     password_policy_max_length: 200,
     link_github: true,
+    logo_url: null,
+    logo_title: null
   },
 })

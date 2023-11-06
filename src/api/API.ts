@@ -19,6 +19,8 @@ export namespace InterfacesAPI {
     password_policy_max_length: number
     password_policy_min_length: number
     link_github: boolean
+    logo_url: string | null
+    logo_title: string | null
   }
 
   export interface SignUpAdmin {
@@ -45,9 +47,21 @@ export namespace InterfacesAPI {
     refresh_token: string | null
   }
 
-  export interface UserInfo {
-    user_id: number
-    email: string
+  export interface Profile {
+    date_birth: Date | null
+    first_name: string | null
+    gender: string | null
+    language: string
+    last_name: string | null
+    timezone: string
+  }
+
+  export interface Info {
+    user_id: number | null
+    email: string | null
+    created_at: Date
+    updated_at: Date
+    profile: Profile
   }
 
   export interface Empty {}
@@ -88,7 +102,7 @@ export class API {
       throw error
     });
 
-  Info = () => instanceAxios.get<InterfacesAPI.UserInfo>('/info/')
+  Info = () => instanceAxios.get<InterfacesAPI.Info>('/info/')
     .then(response=> response.data)
     .catch((error: AxiosError) => {
       throw error;

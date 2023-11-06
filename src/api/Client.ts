@@ -60,7 +60,12 @@ instanceAxios.interceptors.response.use(response => response, error => {
         localStorage.setItem('refresh_token', res.data.refresh_token)
         error.config.headers['Authorization'] = `Bearer ${res.data.access_token}`
         return instanceAxios(error.config)
-    }).catch(err=>err)
+    }).catch(err=> {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      window.location.href = '/signin/'
+      // throw err
+    })
   }
   throw error
 })

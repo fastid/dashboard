@@ -11,6 +11,8 @@ import {InterfacesAPI, API} from "./api/API"
 import {Error500} from "./layers/Error";
 import Routers from "./Routers";
 import {AxiosError} from "axios";
+import 'moment/locale/ru';
+import 'moment/locale/es-us';
 
 export default function App() {
   const [, setError] = useRecoilState<IError>(ErrorState);
@@ -20,7 +22,6 @@ export default function App() {
 
   const [isInit, setIsInit] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-
 
   useEffect(() => {
     const api = new API()

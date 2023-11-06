@@ -38,5 +38,6 @@
   "email_or_password_incorrect": "The email address or password is incorrect",
   "password_incorrect": "Incorrect password",
   "error": "Error",
-  "recaptcha_verification_failed_error": "reCAPTCHA verification failed error"
+  "recaptcha_verification_failed_error": "reCAPTCHA verification failed error",
+  "change_language": "Change language"
 }

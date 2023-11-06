@@ -27,7 +27,15 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import {BsGithub, BsList, BsSun, BsSunFill} from "react-icons/bs";
-import {MdLogout, MdSettings} from "react-icons/md";
+import {
+  MdLanguage,
+  MdLogout,
+  MdOutlineDashboard,
+  MdOutlinePassword, MdOutlineTune,
+  MdPerson2,
+  MdPersonOutline,
+  MdSettings
+} from "react-icons/md";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {IconType} from "react-icons";
@@ -48,9 +56,10 @@ import {ConfigState} from "../states/Config";
 
 
 const CommonMenuList: { icon: IconType, name: string, link: string }[] = [
-  {icon: MdSettings, name: 'Dashboard', link: '/'},
-  {icon: MdSettings, name: 'profile', link: '/signup'},
-  {icon: MdSettings, name: 'change_password', link: '/signup'},
+  {icon: MdOutlineDashboard, name: 'dashboard', link: '/'},
+  {icon: MdOutlineTune, name: 'profile', link: '/signup'},
+  {icon: MdLanguage, name: 'change_language', link: '/signup'},
+  {icon: MdOutlinePassword, name: 'change_password', link: '/signup'},
 ];
 
 
@@ -64,8 +73,8 @@ export const NavigationMenuUpper = () => {
 
   return (
     <>
-      <Image title={'FastID'} ml={3} w={{base: '140px', 'sm': '100px', 'md': '100px', 'lg': '140px'}}
-             src='/logo.svg' alt='FastID'/>
+      <Image title={config.logo_title ? config.logo_title : 'FastID'} ml={3} w={{base: '140px', 'sm': '100px', 'md': '100px', 'lg': '140px'}}
+             src={config.logo_url ? config.logo_url : '/logo.svg'} alt={config.logo_title ? config.logo_title : 'FastID'} />
       <HStack flex={1}>
       </HStack>
 

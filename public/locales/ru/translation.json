@@ -38,5 +38,6 @@
   "email_or_password_incorrect": "Неверный адрес электронной почты или пароль",
   "password_incorrect": "Неверный пароль",
   "error": "Ошибка",
-  "recaptcha_verification_failed_error": "Ошибка проверки reCAPTCHA"
+  "recaptcha_verification_failed_error": "Ошибка проверки reCAPTCHA",
+  "change_language": "Изменить язык"
 }
