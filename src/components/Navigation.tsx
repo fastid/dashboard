@@ -27,15 +27,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import {BsGithub, BsList, BsSun, BsSunFill} from "react-icons/bs";
-import {
-  MdLanguage,
-  MdLogout,
-  MdOutlineDashboard,
-  MdOutlinePassword, MdOutlineTune,
-  MdPerson2,
-  MdPersonOutline,
-  MdSettings
-} from "react-icons/md";
+import {MdLanguage, MdLogout, MdOutlineDashboard, MdOutlinePassword, MdOutlineTune} from "react-icons/md";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import {IconType} from "react-icons";
@@ -58,8 +50,8 @@ import {ConfigState} from "../states/Config";
 const CommonMenuList: { icon: IconType, name: string, link: string }[] = [
   {icon: MdOutlineDashboard, name: 'dashboard', link: '/'},
   {icon: MdOutlineTune, name: 'profile', link: '/signup'},
-  {icon: MdLanguage, name: 'change_language', link: '/signup'},
-  {icon: MdOutlinePassword, name: 'change_password', link: '/signup'},
+  {icon: MdLanguage, name: 'change_language', link: '/change_language/'},
+  {icon: MdOutlinePassword, name: 'change_password', link: '/change_password/'},
 ];
 
 
@@ -144,24 +136,21 @@ export const NavigationMenuUpper = () => {
               <List spacing={3} borderBottom={'1px'} borderBottomColor={'gray.200'} pb={5}>
                 {CommonMenuList.map((item, index) =>
                   <ListItem key={index}>
-                    <Link
+                    <ChakraLink
                       display="block"
                       _focus={{bg: "gray.100"}}
                       _hover={{
                         bg: "brand.200"
                       }}
-                      // _activeLink={{ bg: "orange.500", color: "white" }}
                       w="full"
                       borderRadius="lg"
-                      key={index}
+                      as={ReactRouterLink} to={item.link}
                     >
-                      <ChakraLink as={ReactRouterLink} to={item.link}>
-                        <Flex alignItems="center" pt={2} pb={2}>
-                          <Icon as={item.icon} boxSize="5"/>
-                          <Text ml={2}>{t(item.name)}</Text>
-                        </Flex>
-                      </ChakraLink>
-                    </Link>
+                      <Flex alignItems="center" p={2}>
+                        <Icon as={item.icon}/>
+                        <Text ml={2}>{t(item.name.toString())}</Text>
+                      </Flex>
+                    </ChakraLink>
                   </ListItem>
                 )}
               </List>
