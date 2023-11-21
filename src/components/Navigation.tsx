@@ -1,8 +1,8 @@
 import {
-  AbsoluteCenter,
   Avatar,
   Box,
-  Button, Divider,
+  Button,
+  Divider,
   Drawer,
   DrawerBody,
   DrawerCloseButton,

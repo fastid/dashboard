@@ -21,7 +21,7 @@ export interface JwtPayload {
 export const CheckAuthRouter = (args: LoaderFunctionArgs) => {
   const api = new API()
 
-  api.Info().then(res=>{}).catch((error: AxiosError) => {
+  api.Info().then().catch((error: AxiosError) => {
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
     window.location.href = '/signin/'
@@ -38,8 +38,6 @@ export const CheckAuth = () => {
   const [, setInfo] = useRecoilState<InterfacesAPI.Info>(InfoState)
 
   useEffect(() => {
-    console.log('load!')
-
     const api = new API()
 
     const access_token = localStorage.getItem('access_token')

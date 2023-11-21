@@ -2,8 +2,7 @@ import {Box, Button, Flex} from '@chakra-ui/react'
 import React, {useEffect} from "react";
 import {CommonMenu, NavigationMenuUpper} from "../components/Navigation";
 import {useTranslation} from "react-i18next";
-import {API, InterfacesAPI} from "../api/API";
-import {AxiosError} from "axios";
+import {InterfacesAPI} from "../api/API";
 import {useRecoilState} from "recoil";
 import {InfoState} from "../states/Info";
 
@@ -11,7 +10,7 @@ export const Dashboard = () => {
   const {t} = useTranslation()
   const [info] = useRecoilState<InterfacesAPI.Info>(InfoState)
 
-  let moment = require('moment-timezone');
+  // let moment = require('moment-timezone');
 
     const GetConfig = () => {
       console.log(info.profile)
