@@ -39,5 +39,8 @@
   "password_incorrect": "Incorrect password",
   "error": "Error",
   "recaptcha_verification_failed_error": "reCAPTCHA verification failed error",
-  "change_language": "Change language"
+  "change_language": "Change language",
+  "change_language_description": "Language settings help us make our services more useful to you. We show you content and results in the specified languages and match you with the most relevant content.",
+  "save": "Save",
+  "language_success_changed": "Language successfully changed"
 }

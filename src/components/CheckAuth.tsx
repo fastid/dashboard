@@ -1,12 +1,11 @@
 import jwt_decode from "jwt-decode";
-import {useNavigate} from "react-router-dom";
+import {LoaderFunctionArgs, useNavigate} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {API, InterfacesAPI} from "../api/API";
 import {ConfigState} from "../states/Config";
 import {InfoState} from "../states/Info";
 import {useEffect} from "react";
 import {useTranslation} from "react-i18next";
-import {ErrorState, IError} from "../states/error";
 import {AxiosError} from "axios";
 
 export interface JwtPayload {
@@ -19,14 +18,28 @@ export interface JwtPayload {
   jti?: string;
 }
 
+export const CheckAuthRouter = (args: LoaderFunctionArgs) => {
+  const api = new API()
+
+  api.Info().then(res=>{}).catch((error: AxiosError) => {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    window.location.href = '/signin/'
+  })
+
+  return args
+}
+
+
 export const CheckAuth = () => {
   const navigate = useNavigate();
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
   const [config] = useRecoilState<InterfacesAPI.Config>(ConfigState)
   const [, setInfo] = useRecoilState<InterfacesAPI.Info>(InfoState)
-  const [, setError] = useRecoilState<IError>(ErrorState);
 
   useEffect(() => {
+    console.log('load!')
+
     const api = new API()
 
     const access_token = localStorage.getItem('access_token')
@@ -92,7 +105,7 @@ export const CheckAuth = () => {
           profile: response.profile,
         })
 
-        if (response.profile.language === 'russian') {
+        if (response.profile.language === 'ru') {
           i18n.changeLanguage('ru').then(res=>res).catch(err=>err)
         } else {
           i18n.changeLanguage('en').then(res=>res).catch(err=>err)
@@ -108,7 +121,7 @@ export const CheckAuth = () => {
       navigate('/signin/')
       return
     }
-  }, [])
+  }, [config.jwt_iss, i18n, navigate, setInfo])
 
   return <></>
 }

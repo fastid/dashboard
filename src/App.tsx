@@ -12,7 +12,7 @@ import {Error500} from "./layers/Error";
 import Routers from "./Routers";
 import {AxiosError} from "axios";
 import 'moment/locale/ru';
-import 'moment/locale/es-us';
+import {ToastSuccess} from "./components/ToastSuccess";
 
 export default function App() {
   const [, setError] = useRecoilState<IError>(ErrorState);
@@ -50,6 +50,7 @@ export default function App() {
   return (
     <div>
       <ToastError/>
+      <ToastSuccess/>
       <RouterProvider router={Routers}/>
     </div>
   );

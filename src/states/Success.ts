@@ -1,14 +1,14 @@
 import {atom} from "recoil";
 
 
-export interface IError {
+export interface ISuccess {
   title?: string
   description?: string
   request_id?: string
 }
 
 
-export const ErrorState = atom<IError>({
-  key: 'error',
+export const SuccessState = atom<ISuccess>({
+  key: 'success',
   default: {},
 })

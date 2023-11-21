@@ -64,12 +64,17 @@ export const SignIn = () => {
       captcha: data.captcha}
     ).then(response => {
 
-      const access_token = response.access_token
-      const refresh_token = response.refresh_token
-      localStorage.setItem('access_token', access_token)
-      localStorage.setItem('refresh_token', refresh_token)
-      navigate('/')
-
+      const session_key = response.session_key
+      api.SignInSessionKey({session_key: session_key, totp: null}).then(res => {
+        const access_token = res.access_token
+        const refresh_token = res.refresh_token
+        localStorage.setItem('access_token', access_token)
+        localStorage.setItem('refresh_token', refresh_token)
+        navigate('/')
+      }).catch((err: AxiosError) => {
+        api.ErrorMessage(err, t, setError)
+        setIsLoader(false)
+      })
     }).catch((error: AxiosError) => {
       api.ErrorMessage(error, t, setError)
       setIsLoader(false)

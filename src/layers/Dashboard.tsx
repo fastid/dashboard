@@ -29,7 +29,7 @@ export const Dashboard = () => {
       //   console.log(error)
       // })
     }
-
+    //Language
     useEffect(() => {
       document.title = t('dashboard')
     }, [t])

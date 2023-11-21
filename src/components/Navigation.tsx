@@ -1,7 +1,8 @@
 import {
+  AbsoluteCenter,
   Avatar,
   Box,
-  Button,
+  Button, Divider,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -50,7 +51,7 @@ import {ConfigState} from "../states/Config";
 const CommonMenuList: { icon: IconType, name: string, link: string }[] = [
   {icon: MdOutlineDashboard, name: 'dashboard', link: '/'},
   {icon: MdOutlineTune, name: 'profile', link: '/signup'},
-  {icon: MdLanguage, name: 'change_language', link: '/change_language/'},
+  {icon: MdLanguage, name: 'change_language', link: '/language/'},
   {icon: MdOutlinePassword, name: 'change_password', link: '/change_password/'},
 ];
 
@@ -127,7 +128,6 @@ export const NavigationMenuUpper = () => {
           <DrawerContent>
             <DrawerCloseButton autoFocus={false}/>
             <DrawerHeader>
-              {/*{t('menu')}*/}
               <Avatar size='md' name='Kostya Ten'
                       src='https://1.gravatar.com/avatar/7f43d4a59cc637502c9f903a9ee42a7d3185aa28d3e2d7e31b858f955a65c27b?size=128'/>{' '}
             </DrawerHeader>
@@ -153,6 +153,25 @@ export const NavigationMenuUpper = () => {
                     </ChakraLink>
                   </ListItem>
                 )}
+
+                {/*<ListItem key='logout'>*/}
+                {/*  <ChakraLink*/}
+                {/*    display="block"*/}
+                {/*    _focus={{bg: "gray.100"}}*/}
+                {/*    _hover={{*/}
+                {/*      bg: "brand.200"*/}
+                {/*    }}*/}
+                {/*    w="full"*/}
+                {/*    borderRadius="lg"*/}
+                {/*    as={ReactRouterLink} to='/logout/'*/}
+                {/*  >*/}
+                {/*    <Flex alignItems="center" p={2}>*/}
+                {/*      <Icon as={MdLogout}/>*/}
+                {/*      <Text ml={2}>{t('logout')}</Text>*/}
+                {/*    </Flex>*/}
+                {/*  </ChakraLink>*/}
+                {/*</ListItem>*/}
+
               </List>
 
               {/* Admin */}
@@ -247,7 +266,7 @@ export const CommonMenu = () => {
 
   return (
     <>
-      <Box p={3} w={350} display={{base: "none", lg: 'block'}} borderBottom={'1px'} borderBottomColor={'gray.200'}>
+      <Box p={3} w={270} display={{base: "none", lg: 'block'}}>
         <List spacing={3}>
 
           {CommonMenuList.map((item, index) =>
@@ -269,9 +288,11 @@ export const CommonMenu = () => {
               </ChakraLink>
             </ListItem>
           )}
+          <Divider />
 
         </List>
       </Box>
+
     </>
   )
 }

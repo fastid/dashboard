@@ -31,6 +31,11 @@ export namespace InterfacesAPI {
   }
 
   export interface SignIn {
+    session_key: string
+    otp: boolean
+  }
+
+  export interface SignInSessionKey {
     access_token: string
     refresh_token: string
   }
@@ -52,6 +57,7 @@ export namespace InterfacesAPI {
     first_name: string | null
     gender: string | null
     language: string
+    locate: string
     last_name: string | null
     timezone: string
   }
@@ -62,6 +68,15 @@ export namespace InterfacesAPI {
     created_at: Date
     updated_at: Date
     profile: Profile
+  }
+
+  export interface LanguageList {
+    name: string
+    value: string
+  }
+
+  export interface Language {
+    results: LanguageList[]
   }
 
   export interface Empty {}
@@ -96,13 +111,13 @@ export class API {
     }
   }
 
-  Config = () => instanceAxios.get<InterfacesAPI.Config>('/config/')
+  Config = () => instanceAxios.get<InterfacesAPI.Config>('/internal/config/')
     .then(response=> response.data)
     .catch((error: AxiosError) => {
       throw error
     });
 
-  Info = () => instanceAxios.get<InterfacesAPI.Info>('/info/')
+  Info = () => instanceAxios.get<InterfacesAPI.Info>('/users/info/')
     .then(response=> response.data)
     .catch((error: AxiosError) => {
       throw error;
@@ -110,7 +125,7 @@ export class API {
 
   RefreshToken = (
     {refresh_token} : { refresh_token: string}
-  ) => instanceAxios.post<InterfacesAPI.RefreshToken>('/refresh_token/', {refresh_token: refresh_token})
+  ) => instanceAxios.post<InterfacesAPI.RefreshToken>('/internal/refresh_token/', {refresh_token: refresh_token})
     .then(response => response.data)
     .catch((error: AxiosError) => {
       throw error;
@@ -118,7 +133,7 @@ export class API {
 
   SignIn = (
     {email, password, captcha} : { email: string, password: string, captcha?: string}
-  ) => instanceAxios.post<InterfacesAPI.SignIn>('/signin/', {
+  ) => instanceAxios.post<InterfacesAPI.SignIn>('/internal/signin/', {
     email: email,
     password: password,
     captcha: captcha,
@@ -126,10 +141,31 @@ export class API {
       throw error
   })
 
-  Logout = () => instanceAxios.post<InterfacesAPI.Empty>('/logout/', {})
+  SignInSessionKey = (
+    {session_key, totp} : { session_key: string, totp: number | null}
+  ) => instanceAxios.post<InterfacesAPI.SignInSessionKey>(`/internal/signin/${session_key}/`, {
+    totp: totp,
+  }).then(response => response.data).catch((error: AxiosError) => {
+    throw error
+  })
+
+  Logout = () => instanceAxios.post<InterfacesAPI.Empty>('/internal/logout/', {})
     .then(response => response.data)
     .catch((error: AxiosError) => {
       throw error
+    })
+
+  Language = () => instanceAxios.get<InterfacesAPI.Language>('/users/language/')
+    .then(response=> response.data)
+    .catch((error: AxiosError) => {
+      throw error;
+    })
+
+  LanguageSave = ({language, locate} : {language: string, locate: string}) =>
+    instanceAxios.post<InterfacesAPI.Empty>('/users/language/', {'language':language, locate: locate})
+    .then(response=> response.data)
+    .catch((error: AxiosError) => {
+      throw error;
     })
 
 }

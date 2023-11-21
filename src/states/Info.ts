@@ -12,6 +12,7 @@ export const InfoState = atom<InterfacesAPI.Info>({
       last_name: null,
       first_name: null,
       language: 'english',
+      locate: 'en-us',
       timezone: 'UTC',
       date_birth: null,
       gender: null

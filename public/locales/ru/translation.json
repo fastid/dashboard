@@ -39,5 +39,8 @@
   "password_incorrect": "Неверный пароль",
   "error": "Ошибка",
   "recaptcha_verification_failed_error": "Ошибка проверки reCAPTCHA",
-  "change_language": "Изменить язык"
+  "change_language": "Изменить язык",
+  "change_language_description": "Языковые настройки помогают нам делать сервисы более полезными для вас. Мы показываем вам материалы и результаты на указанных языках и подбираем для вас наиболее подходящий контент.",
+  "save": "Сохранить",
+  "language_success_changed": "Язык успешно изменен"
 }
