@@ -40,7 +40,7 @@ export const Language = () => {
     }).catch((error: AxiosError) => {
       console.log(error)
     })
-  }, [t])
+  }, [t, api])
 
   const onSubmit: SubmitHandler<LanguageForm> = (data) => {
     console.log('onSubmit')
@@ -49,7 +49,7 @@ export const Language = () => {
     const found = data.locate.match(regex)
     if (found){
 
-      api.LanguageSave({language: found[0], locate: data.locate}).then(response=>{
+      api.LanguageSave({language: found[0], locate: data.locate}).then(()=>{
         setInfo({...info, profile: {...info.profile, locate: data.locate, language: found[0]}})
         setSuccess({title: t('language_success_changed')})
       }).catch((error: AxiosError) => {

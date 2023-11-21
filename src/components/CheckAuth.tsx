@@ -21,7 +21,7 @@ export interface JwtPayload {
 export const CheckAuthRouter = (args: LoaderFunctionArgs) => {
   const api = new API()
 
-  api.Info().then().catch((error: AxiosError) => {
+  api.Info().then().catch(() => {
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
     window.location.href = '/signin/'
@@ -109,7 +109,7 @@ export const CheckAuth = () => {
           i18n.changeLanguage('en').then(res=>res).catch(err=>err)
         }
 
-      }).catch((error: AxiosError) => {
+      }).catch(() => {
         navigate('/')
         return
       })
