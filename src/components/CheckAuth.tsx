@@ -6,7 +6,6 @@ import {ConfigState} from "../states/Config";
 import {InfoState} from "../states/Info";
 import {useEffect} from "react";
 import {useTranslation} from "react-i18next";
-import {AxiosError} from "axios";
 
 export interface JwtPayload {
   iss: string;

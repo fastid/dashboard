@@ -25,13 +25,14 @@ export const Language = () => {
   const [, setSuccess] = useRecoilState<ISuccess>(SuccessState);
 
   const [selected, setSelected] = useState('')
-  const api = new API()
 
   useEffect(() => {
     setSelected(info.profile.locate)
   }, [info])
 
   useEffect(() => {
+    const api = new API()
+
     document.title = t('change_language')
     // setSelected(info.profile.locate)
 
@@ -40,7 +41,7 @@ export const Language = () => {
     }).catch((error: AxiosError) => {
       console.log(error)
     })
-  }, [t, api])
+  }, [t])
 
   const onSubmit: SubmitHandler<LanguageForm> = (data) => {
     console.log('onSubmit')
@@ -48,6 +49,7 @@ export const Language = () => {
     const regex = new RegExp('^[a-z]+', 'i')
     const found = data.locate.match(regex)
     if (found){
+      const api = new API()
 
       api.LanguageSave({language: found[0], locate: data.locate}).then(()=>{
         setInfo({...info, profile: {...info.profile, locate: data.locate, language: found[0]}})
