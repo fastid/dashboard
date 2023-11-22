@@ -151,7 +151,7 @@ export const CheckAuth = () => {
       navigate('/signin/')
       return
     }
-  }, [])
+  }, [config.jwt_iss, i18n, navigate, setInfo])
 
   return <></>
 }
