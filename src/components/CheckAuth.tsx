@@ -6,6 +6,7 @@ import {ConfigState} from "../states/Config";
 import {InfoState} from "../states/Info";
 import {useEffect} from "react";
 import {useTranslation} from "react-i18next";
+import {AxiosError} from "axios";
 
 export interface JwtPayload {
   iss: string;
@@ -20,10 +21,16 @@ export interface JwtPayload {
 export const CheckAuthRouter = (args: LoaderFunctionArgs) => {
   const api = new API()
 
-  api.Info().then().catch(() => {
+  api.Info().then(res=>res).catch((error: AxiosError) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.dir(error)
+      console.debug('session termination due to an error receiving data from api.Info')
+    }
+
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
     window.location.href = '/signin/'
+    return args
   })
 
   return args
@@ -63,6 +70,11 @@ export const CheckAuth = () => {
       if(decoded_access_token.iss !== config.jwt_iss) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
+
+        if (process.env.NODE_ENV === 'development') {
+          console.debug(`Token deleted because no iss (${config.jwt_iss}) is found in access_token`)
+        }
+
         navigate('/signin/')
         return
       }
@@ -70,6 +82,11 @@ export const CheckAuth = () => {
       if(decoded_refresh_token.iss !== config.jwt_iss) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
+
+        if (process.env.NODE_ENV === 'development') {
+          console.debug(`Token deleted because no iss (${config.jwt_iss}) is found in refresh_token`)
+        }
+
         navigate('/signin/')
         return
       }
@@ -77,6 +94,11 @@ export const CheckAuth = () => {
       if(timestamp >= decoded_refresh_token.exp) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
+
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('The tokens is deleted because its lifetime has come to an end')
+        }
+
         navigate('/signin/')
         return
       }
@@ -87,6 +109,11 @@ export const CheckAuth = () => {
           const refresh_token = response.refresh_token
           localStorage.setItem('access_token', access_token)
           localStorage.setItem('refresh_token', refresh_token)
+
+          if (process.env.NODE_ENV === 'development') {
+            console.debug('The tokens have been renewed as they have expired.')
+          }
+
         }).catch(() => {})
         navigate('/')
         return
@@ -109,16 +136,22 @@ export const CheckAuth = () => {
         }
 
       }).catch(() => {
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('Tokens are deleted because api.Info request ended with an error')
+        }
         navigate('/')
         return
       })
 
     }
     else {
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('session termination due to missing token access_token or refresh_token')
+      }
       navigate('/signin/')
       return
     }
-  }, [config.jwt_iss, i18n, navigate, setInfo])
+  }, [])
 
   return <></>
 }

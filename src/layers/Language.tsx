@@ -44,8 +44,6 @@ export const Language = () => {
   }, [t])
 
   const onSubmit: SubmitHandler<LanguageForm> = (data) => {
-    console.log('onSubmit')
-
     const regex = new RegExp('^[a-z]+', 'i')
     const found = data.locate.match(regex)
     if (found){
@@ -54,9 +52,13 @@ export const Language = () => {
       api.LanguageSave({language: found[0], locate: data.locate}).then(()=>{
         setInfo({...info, profile: {...info.profile, locate: data.locate, language: found[0]}})
         setSuccess({title: t('language_success_changed')})
+
+        if (process.env.NODE_ENV === 'development') {
+          console.info(`Language successfully changed, locate - ${data.locate}`)
+        }
+
       }).catch((error: AxiosError) => {
         api.ErrorMessage(error, t, setError)
-        console.log(error)
       })
 
       i18n.changeLanguage(found[0]).then(response=>response).catch(error=>error)
@@ -73,8 +75,8 @@ export const Language = () => {
       <Flex w={'100%'}>
         <CommonMenu/>
 
-        <Flex p={5} w={'70%'} justifyContent={'space-around'}>
-          <Card w={'500px'}>
+        <Flex p={5} w={{ lg: '70%', sm: '100%'}} justifyContent={'space-around'}>
+          <Card w={{ md: '500px', sm: '100%'}}>
             <CardHeader>
               <Heading size='md'>{t('change_language')}</Heading>
               <Text mt={5}>{t('change_language_description')}</Text>
@@ -112,7 +114,6 @@ export const Language = () => {
               </FormProvider>
             </CardBody>
           </Card>
-
 
         </Flex>
 

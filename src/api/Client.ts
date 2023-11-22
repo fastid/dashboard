@@ -59,10 +59,20 @@ instanceAxios.interceptors.response.use(response => response, error => {
         localStorage.setItem('access_token', res.data.access_token)
         localStorage.setItem('refresh_token', res.data.refresh_token)
         error.config.headers['Authorization'] = `Bearer ${res.data.access_token}`
+
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('The tokens have been renewed as they have expired.')
+        }
+
         return instanceAxios(error.config)
     }).catch(()=> {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
+
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('Tokens deleted')
+      }
+
       window.location.href = '/signin/'
       // throw err
     })
